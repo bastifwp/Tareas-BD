@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+//To migrate this file use the command: npx prisma migrate dev
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model trabajos {
+  id          Int     @id @default(autoincrement())
+  descripcion String? @db.VarChar(45)
+  sueldo      Int
+  trabajadores personaje_tiene_trabajo[]
+}
+
+model personajes {
+  id               Int       @id @default(autoincrement())
+  nombre           String    @db.VarChar(45)
+  fuerza           Int    
+  fecha_nacimiento DateTime  @db.Date
+  objeto           String?   @db.VarChar(45)
+  karts            karts[]
+  trabajos         personaje_tiene_trabajo[]
+  reino            personaje_habita_reino[]
+}
+
+model karts {
+  id               Int    @id @default(autoincrement()) 
+  modelo           String @db.VarChar(45)
+  color            String @db.VarChar(45)
+  velocidad_maxima Int?
+  personaje        personajes? @relation(fields: [id_personaje], references: [id]) 
+  id_personaje     Int? 
+}
+
+model reinos {
+  id         Int    @id @default(autoincrement())
+  nombre     String @db.VarChar(45)
+  ubicacion  String @db.VarChar(45)
+  superficie Int
+  habitantes personaje_habita_reino[]
+  considera_alidos  diplomacias[] @relation("considera_aliado")
+  lo_consideran_aliado diplomacias[] @relation("lo_considera_aliado")
+  defensas reino_tiene_defensa[]
+}
+
+model defensas {
+  id      Int    @id @default(autoincrement())
+  defensa String @db.VarChar(45)
+  reinos reino_tiene_defensa[]
+}
+
+model personaje_tiene_trabajo {
+  id_trabajo    Int
+  trabajo       trabajos   @relation(fields: [id_trabajo], references: [id])
+  id_personaje  Int
+  personaje     personajes @relation(fields: [id_personaje], references: [id])
+  fecha_inicio  DateTime   @db.Date
+  fecha_termino DateTime?  @db.Date
+  @@id([id_trabajo, id_personaje])
+}
+
+model personaje_habita_reino {
+  id_personaje   Int 
+  personaje      personajes @relation(fields: [id_personaje], references: [id])
+  id_reino       Int
+  reino          reinos @relation(fields: [id_reino], references: [id])
+  fecha_registro DateTime
+  es_gobernante  Boolean
+  @@id([id_reino, id_personaje])
+}
+
+model diplomacias {
+  id_reino_1 Int
+  reino_1 reinos @relation(fields: [id_reino_1], references: [id], name: "considera_aliado")
+  id_reino_2 Int
+  reino_2 reinos @relation(fields: [id_reino_2], references: [id], name: "lo_considera_aliado")
+  es_aliado Boolean
+  @@id([id_reino_1, id_reino_2])
+}
+
+model reino_tiene_defensa {
+  id_reino Int
+  reino reinos @relation(fields: [id_reino], references: [id])
+  id_defensa Int
+  defensa defensas @relation(fields: [id_defensa], references: [id])
+  @@id([id_defensa,id_reino])
+}
