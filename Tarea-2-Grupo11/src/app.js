@@ -1,5 +1,5 @@
 import express from 'express';
-import UsersController from './controllers/UsersController.js';
+import TrabajosController from './controllers/TrabajosController.js';
 import morgan from 'morgan';
 
 const ENV = process.env;
@@ -10,10 +10,13 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 //endpoints(Routes)
-app.get('/users', UsersController.getUsers)
-app.get('/users/:id', UsersController.getUserById)
-app.post('/users', UsersController.createUser)
-app.get('/users/:id/posts', UsersController.usersPosts)
+//Endpoits para Trabajos:
+app.post('/trabajos', TrabajosController.createTrabajo)
+app.get('/trabajos', TrabajosController.getTrabajos)
+app.get('/trabajos/:id', TrabajosController.getTrabajoById)
+app.delete('/trabajos/:id', TrabajosController.deleteTrabajoById)
+app.put('/trabajos/:id', TrabajosController.updateTrabajoById)
+
 
 
 //==========================================================//

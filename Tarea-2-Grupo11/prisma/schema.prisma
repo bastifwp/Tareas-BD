@@ -25,7 +25,7 @@ model personajes {
   nombre           String    @db.VarChar(45)
   fuerza           Int    
   fecha_nacimiento DateTime  @db.Date
-  objeto           String?   @db.VarChar(45)
+  objeto           String?   @db.VarChar(30)
   karts            karts[]
   trabajos         personaje_tiene_trabajo[]
   reino            personaje_habita_reino[]
@@ -72,7 +72,7 @@ model personaje_habita_reino {
   personaje      personajes @relation(fields: [id_personaje], references: [id])
   id_reino       Int
   reino          reinos @relation(fields: [id_reino], references: [id])
-  fecha_registro DateTime
+  fecha_registro DateTime @db.Timestamp(3)
   es_gobernante  Boolean
   @@id([id_reino, id_personaje])
 }
