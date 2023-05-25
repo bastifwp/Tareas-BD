@@ -28,8 +28,13 @@ app.delete('/personaje_tiene_trabajo/:id_trabajo/:id_personaje',Personaje_tiene_
 app.put('/personaje_tiene_trabajo/:id_trabajo/:id_personaje',Personaje_tiene_trabajoController.updateContratoById)
 
 //Endpoints para Personajes
-
 app.post('/personajes',PersonajesController.createPersonaje)
+app.get('/personajes', PersonajesController.getPersonaje)
+app.get('/personajes/:id',PersonajesController.getPersonajeById)
+app.delete('/personajes/:id',PersonajesController.deletePersonajeById)
+app.put('/personajes/:id', PersonajesController.updatePersonajeById)
+
+//Endpoints para Karts
 
 //==========================================================//
 app.get('/', (req, res) => {

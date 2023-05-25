@@ -19,8 +19,61 @@ const createPersonaje = async (req, res) => {
     res.json(Personaje) //Podemos devolver un res.status(404), por ejemplo
 }
 
+//Petición para ver personajes (R)
+
+const getPersonaje = async (req, res) => {
+    const Personajes = await prisma.personajes.findMany()
+    res.json(Personajes)
+}
+
+const getPersonajeById = async (req, res) => {
+    const {id} = req.params
+    const Personaje = await prisma.personajes.findUnique({
+        where: {
+            id: id
+        }
+    })
+    res.json(Personaje)
+}
+
+//Petición para Actualizar un personaje (U)
+
+const updatePersonajeById = async (req, res) => {
+    const { id } = req.params
+    const {nombre,fuerza,fecha_nacimiento,objeto} = req.body
+    const Personaje = await prisma.personajes.update({
+        where : {
+            id: id
+        },
+        data : {
+            nombre: nombre,
+            fuerza: fuerza,
+            fecha_nacimiento: fecha_nacimiento,
+            objeto: objeto
+        },
+
+    })
+    res.json(Personaje)
+}
+
+//Petición para borrar un personaje (D)
+
+const deletePersonajeById = async (req, res) => {
+    const {id} = req.params
+    const deletePersonaje = await prisma.personajes.delete({
+        where:{
+            id: id
+        },
+    })
+    res.json(deletePersonaje) //Devuelve el trabajo que eliminó
+}
+
 const PersonajesController = {
-    createPersonaje
+    createPersonaje,
+    getPersonaje,
+    getPersonajeById,
+    updatePersonajeById,
+    deletePersonajeById
 }
 
 export default PersonajesController
