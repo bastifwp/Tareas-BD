@@ -1,10 +1,24 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 
 /**************** CRUD TRABAJOS *************/
 //Peticion para crear un trabajo (C)
 const createTrabajo = async (req, res) => {
     const { descripcion, sueldo } = req.body
+
+    //Realizamos las verificaciones necesarias
+    if(typeof sueldo !== 'number'){
+
+        //Creamos nuestro error
+        throw new ErrorController.BaseError('Tipo de dato inválido', 418, "El atributo sueldo debe ser un entero")
+    }
+
+    if(sueldo < 0){
+        throw new ErrorController.BaseError('Sueldo fuera de rango', 418, "weon cagon")
+    }
+
+    //En caso de que todo esté en orden lo ingresamos a la base de datos
     const trabajos = await prisma.trabajos.create({ //Creo que aquí podemos ver los errores
         data: {
             descripcion,
