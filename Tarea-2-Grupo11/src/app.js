@@ -59,9 +59,9 @@ app.put('/karts/:id',use(KartsController.updateKartById))
 //Endpoints para Personaje_habita_reino
 app.post('/personaje_habita_reino',use(Personaje_habita_reinoController.createHabitante))
 app.get('/personaje_habita_reino',use(Personaje_habita_reinoController.getHabitantes))
-app.get('/personaje_habita_reino/:id_personaje/:id_reino',use(Personaje_habita_reinoController.getHabitanteById))
-app.delete('/personaje_habita_reino/:id_personaje/:id_reino',use(Personaje_habita_reinoController.deleteHabitanteById))
-app.put('/personaje_habita_reino/:id_personaje/:id_reino',use(Personaje_habita_reinoController.updateHabitanteById))
+app.get('/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.getHabitanteById))
+app.delete('/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.deleteHabitanteById))
+app.put('/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.updateHabitanteById))
 
 //Endpoints para Reinos
 app.post('/reinos',use(ReinosController.createReino))

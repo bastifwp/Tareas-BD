@@ -5,8 +5,8 @@ import prisma from '../prismaClient.js'
 //Peticion para crear un personaje (C)
 
 const createPersonaje = async (req, res) => {
-    const { id, nombre, fuerza, a, objeto } = req.body
-    const fecha_nacimiento = new Date(a)
+    var { id, nombre, fuerza, fecha_nacimiento, objeto } = req.body
+    fecha_nacimiento = new Date(fecha_nacimiento)
     const Personaje = await prisma.personajes.create({ 
         data: {
             id,
@@ -40,7 +40,8 @@ const getPersonajeById = async (req, res) => {
 
 const updatePersonajeById = async (req, res) => {
     const { id } = req.params
-    const {nombre,fuerza,fecha_nacimiento,objeto} = req.body
+    var {nombre,fuerza,fecha_nacimiento,objeto} = req.body
+    fecha_nacimiento = new Date(fecha_nacimiento)
     const Personaje = await prisma.personajes.update({
         where : {
             id: id

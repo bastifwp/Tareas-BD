@@ -1,4 +1,5 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 /**************** CRUD REINOS *************/
 
@@ -6,6 +7,13 @@ import prisma from '../prismaClient.js'
 
 const createReino = async (req, res) => {
     const { id, nombre, ubicacion, superficie } = req.body
+
+    //Verificamos que los atributos not null esten presentes
+    ErrorController.ReinosNotNullCheck(nombre,ubicacion,superficie)
+
+    //Revisamos atributos
+    ErrorController.ReinosSintaxCheck(nombre,ubicacion,superficie)
+
     const Reino = await prisma.reinos.create({ 
         data: {
             id,
@@ -39,6 +47,10 @@ const getReinoById = async (req, res) => {
 const updateReinoById = async (req, res) => {
     const {id} = req.params
     const {nombre,ubicacion,superficie} = req.body
+
+    //Revisamos atributos
+    ErrorController.ReinosSintaxCheck(nombre,ubicacion,superficie)
+
     const Reino = await prisma.reinos.update({
         where : {
             id:id

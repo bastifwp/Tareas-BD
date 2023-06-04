@@ -5,8 +5,9 @@ import prisma from '../prismaClient.js'
 //Peticion para crear asignar un trabajo a una persona (C)
 
 const createContrato = async (req, res) => {
-    const { id_trabajo, id_personaje, a, fecha_termino } = req.body
-    const fecha_inicio = new Date(a)
+    var { id_trabajo, id_personaje, fecha_inicio, fecha_termino } = req.body
+    fecha_inicio = new Date(fecha_inicio)
+    fecha_termino = new Date(fecha_termino)
     const Contrato = await prisma.personaje_tiene_trabajo.create({ //Creo que aquí podemos ver los errores
         data: {
             id_trabajo,
@@ -30,8 +31,10 @@ const getContratoById = async (req, res) => {
     const {id_trabajo,id_personaje} = req.params
     const Contrato = await prisma.personaje_tiene_trabajo.findUnique({
         where: {
-            id_trabajo: id_trabajo,
-            id_personaje: id_personaje
+            id_trabajo_id_personaje : {
+                id_trabajo: Number(id_trabajo),
+                id_personaje: Number(id_personaje),
+            }
         }
     })
     res.json(Contrato)
@@ -41,11 +44,15 @@ const getContratoById = async (req, res) => {
 
 const updateContratoById = async (req, res) => {
     const { id_trabajo,id_personaje } = req.params
-    const {fecha_inicio, fecha_termino} = req.body
+    var {fecha_inicio, fecha_termino} = req.body
+    fecha_inicio = new Date(fecha_inicio)
+    fecha_termino = new Date(fecha_termino)
     const Contrato = await prisma.personaje_tiene_trabajo.update({
         where : {
-            id_trabajo: Number(id_trabajo),
-            id_personaje: Number(id_personaje)
+            id_trabajo_id_personaje : {
+                id_trabajo: Number(id_trabajo),
+                id_personaje: Number(id_personaje),
+            }
         },
         data : {
             fecha_inicio: fecha_inicio,
@@ -62,8 +69,10 @@ const deleteContratoById = async (req, res) => {
     const {id_trabajo,id_personaje} = req.params
     const deleteContrato = await prisma.personaje_tiene_trabajo.delete({
         where:{
-            id_trabajo: Number(id_trabajo),
-            id_personaje: Number(id_personaje)
+            id_trabajo_id_personaje : {
+                id_trabajo: Number(id_trabajo),
+                id_personaje: Number(id_personaje),
+            }
         },
     })
     res.json(deleteContrato) //Devuelve el trabajo que eliminó

@@ -1,12 +1,13 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 /**************** CRUD PERSONAJE_HABITA_REINO *************/
 
 //Peticion para crear un habitante (C)
 
 const createHabitante = async (req, res) => {
-    const { id_personaje, id_reino, a, es_gobernante } = req.body
-    const fecha_registro = Date(a)
+    var { id_personaje, id_reino, fecha_registro, es_gobernante } = req.body
+    fecha_registro = Date(fecha_registro)
     const Habitante = await prisma.personaje_habita_reino.create({ 
         data: {
             id_personaje,
@@ -26,11 +27,13 @@ const getHabitantes = async (req, res) => {
 }
 
 const getHabitanteById = async (req, res) => {
-    const {id_personaje,id_reino} = req.params
+    const {id_reino,id_personaje} = req.params
     const Habitante = await prisma.personaje_habita_reino.findUnique({
         where: {
-            id_reino: id_reino,
-            id_personaje: id_personaje
+            id_reino_id_personaje :{
+                id_reino: id_reino,
+                id_personaje: id_personaje
+            }
         }
     })
     res.json(Habitante)
@@ -39,13 +42,15 @@ const getHabitanteById = async (req, res) => {
 //Petición para Actualizar un habitante (U)
 
 const updateHabitanteById = async (req, res) => {
-    const { id_personaje,id_reino} = req.params
-    const {a,es_gobernante} = req.body
-    const fecha_registro = Date(a)
+    const {id_reino,id_personaje} = req.params
+    var {fecha_registro,es_gobernante} = req.body
+    fecha_registro = Date(f)
     const Habitante = await prisma.personaje_habita_reino.update({
         where : {
-            id_personaje: id_personaje,
-            id_reino: id_reino
+            id_reino_id_personaje :{
+                id_reino: id_reino,
+                id_personaje: id_personaje
+            }
         },
         data : {
             fecha_registro: fecha_registro,
@@ -58,11 +63,13 @@ const updateHabitanteById = async (req, res) => {
 //Petición para borrar un Habitante (D)
 
 const deleteHabitanteById = async (req, res) => {
-    const {id_personaje,id_reino} = req.params
+    const {id_reino,id_personaje} = req.params
     const deleteHabitante = await prisma.personaje_habita_reino.delete({
         where:{
-            id_personaje: id_personaje,
-            id_reino: id_reino
+            id_reino_id_personaje :{
+                id_reino: id_reino,
+                id_personaje: id_personaje
+            }
         },
     })
     res.json(deleteHabitante) 

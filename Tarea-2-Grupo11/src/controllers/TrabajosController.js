@@ -8,23 +8,19 @@ import ErrorController from './ErrorController.js'
 const createTrabajo = async (req, res) => {
     const { descripcion, sueldo } = req.body
 
+    let sintaxis = [[typeof descripcion,descripcion,'descripcion'],
+                    [typeof sueldo,sueldo,'sueldo']]
+
+    let sintaxis_esperada = [['string',45],
+                             ['number',0]]
+
+    let not_null = [[sueldo,'sueldo']]
+
     //Verificamos que los atributos not null estén presentes
-    if(sueldo == null){
-        throw new ErrorController.BaseError('Informacion insuficiente',400,'El atributo sueldo es requerido')
-    }
+    ErrorController.NotNullCheck(not_null)
+
     //Revisamos atributos
-    if(typeof sueldo !== 'number'){
-        throw new ErrorController.BaseError('Tipo de dato inválido', 418, "El atributo sueldo debe ser un entero")
-    }
-    if(sueldo < 0){
-        throw new ErrorController.BaseError('Sueldo fuera de rango', 418, "El atributo sueldo no puede ser un entero menor a 0")
-    }
-    if(typeof descripcion !== 'string'){
-        throw new ErrorController.BaseError('Tipo de dato invalido',400,'El atributo descripcion debe ser un string')
-    }
-    if(descripcion.length > 45){
-        throw new ErrorController.BaseError('Descripcion fuera de rango',400,'El atributo descripcion no puede sobrepasar los 45 caracteres')
-    }
+    ErrorController.SintaxCheck(sintaxis,sintaxis_esperada)
 
     const trabajos = await prisma.trabajos.create({
         data: {
@@ -57,19 +53,14 @@ const updateTrabajoById = async (req, res) => {
     const { id } = req.params
     const {descripcion, sueldo} = req.body
 
+    let sintaxis = [[typeof descripcion,descripcion,'descripcion'],
+                    [typeof sueldo,sueldo,'sueldo']]
+
+    let sintaxis_esperada = [['string',45],
+                             ['number',0]]
+
     //Revisamos atributos
-    if(typeof descripcion !== 'string'){
-        throw new ErrorController.BaseError('Tipo de dato invalido',400,'El atributo descripcion debe ser un string')
-    }
-    if(sueldo.length > 45){
-        throw new ErrorController.BaseError('Descripcion fuera de rango',400,'El atributo descripcion no puede sobrepasar los 45 caracteres')
-    }
-    if(typeof sueldo !== 'number'){
-        throw new ErrorController.BaseError('Tipo de dato invalido',400,'El atributo sueldo debe ser un entero')
-    }
-    if(sueldo < 0){
-        throw new ErrorController.BaseError('Sueldo fuera de rango', 418, "El atributo sueldo no puede ser un entero menor a 0")
-    }
+    ErrorController.SintaxError(sintaxis,sintaxis_esperada)
 
     const trabajos = await prisma.trabajos.update({
         where : {
