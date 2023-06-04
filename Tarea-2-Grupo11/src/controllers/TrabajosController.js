@@ -3,33 +3,41 @@ import ErrorController from './ErrorController.js'
 
 
 /**************** CRUD TRABAJOS *************/
+
 //Peticion para crear un trabajo (C)
 const createTrabajo = async (req, res) => {
     const { descripcion, sueldo } = req.body
 
-    //Realizamos las verificaciones necesarias
+    //Verificamos que los atributos not null estén presentes
+    if(sueldo == null){
+        throw new ErrorController.BaseError('Informacion insuficiente',400,'El atributo sueldo es requerido')
+    }
+    //Revisamos atributos
     if(typeof sueldo !== 'number'){
-
-        //Creamos nuestro error
         throw new ErrorController.BaseError('Tipo de dato inválido', 418, "El atributo sueldo debe ser un entero")
     }
-
     if(sueldo < 0){
-        throw new ErrorController.BaseError('Sueldo fuera de rango', 418, "weon cagon")
+        throw new ErrorController.BaseError('Sueldo fuera de rango', 418, "El atributo sueldo no puede ser un entero menor a 0")
+    }
+    if(typeof descripcion !== 'string'){
+        throw new ErrorController.BaseError('Tipo de dato invalido',400,'El atributo descripcion debe ser un string')
+    }
+    if(descripcion.length > 45){
+        throw new ErrorController.BaseError('Descripcion fuera de rango',400,'El atributo descripcion no puede sobrepasar los 45 caracteres')
     }
 
-    //En caso de que todo esté en orden lo ingresamos a la base de datos
-    const trabajos = await prisma.trabajos.create({ //Creo que aquí podemos ver los errores
+    const trabajos = await prisma.trabajos.create({
         data: {
             descripcion,
             sueldo
         }
     })
-    res.json(trabajos) //Podemos devolver un res.status(404), por ejemplos
+    res.json(trabajos)
 }
 
 //Petición para ver trabajos (R)
 const getTrabajos = async (req, res) => {
+
     const trabajos = await prisma.trabajos.findMany()
     res.json(trabajos)
 }
@@ -48,6 +56,21 @@ const getTrabajoById = async (req, res) => {
 const updateTrabajoById = async (req, res) => {
     const { id } = req.params
     const {descripcion, sueldo} = req.body
+
+    //Revisamos atributos
+    if(typeof descripcion !== 'string'){
+        throw new ErrorController.BaseError('Tipo de dato invalido',400,'El atributo descripcion debe ser un string')
+    }
+    if(sueldo.length > 45){
+        throw new ErrorController.BaseError('Descripcion fuera de rango',400,'El atributo descripcion no puede sobrepasar los 45 caracteres')
+    }
+    if(typeof sueldo !== 'number'){
+        throw new ErrorController.BaseError('Tipo de dato invalido',400,'El atributo sueldo debe ser un entero')
+    }
+    if(sueldo < 0){
+        throw new ErrorController.BaseError('Sueldo fuera de rango', 418, "El atributo sueldo no puede ser un entero menor a 0")
+    }
+
     const trabajos = await prisma.trabajos.update({
         where : {
             id: Number(id),

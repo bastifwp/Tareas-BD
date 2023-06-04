@@ -50,46 +50,46 @@ app.delete('/personajes/:id', use(PersonajesController.deletePersonajeById))
 app.put('/personajes/:id', use(PersonajesController.updatePersonajeById))
 
 //Endpoints para Karts
-app.post('/karts',KartsController.createKart)
-app.get('/karts',KartsController.getKarts)
-app.get('/karts/:id',KartsController.getKartById)
-app.delete('/karts/:id',KartsController.deleteKartById)
-app.put('/karts/:id',KartsController.updateKartById)
+app.post('/karts',use(KartsController.createKart))
+app.get('/karts',use(KartsController.getKarts))
+app.get('/karts/:id',use(KartsController.getKartById))
+app.delete('/karts/:id',use(KartsController.deleteKartById))
+app.put('/karts/:id',use(KartsController.updateKartById))
 
 //Endpoints para Personaje_habita_reino
-app.post('/personaje_habita_reino',Personaje_habita_reinoController.createHabitante)
-app.get('/personaje_habita_reino',Personaje_habita_reinoController.getHabitantes)
-app.get('/personaje_habita_reino/:id_personaje/:id_reino',Personaje_habita_reinoController.getHabitanteById)
-app.delete('/personaje_habita_reino/:id_personaje/:id_reino',Personaje_habita_reinoController.deleteHabitanteById)
-app.put('/personaje_habita_reino/:id_personaje/:id_reino',Personaje_habita_reinoController.updateHabitanteById)
+app.post('/personaje_habita_reino',use(Personaje_habita_reinoController.createHabitante))
+app.get('/personaje_habita_reino',use(Personaje_habita_reinoController.getHabitantes))
+app.get('/personaje_habita_reino/:id_personaje/:id_reino',use(Personaje_habita_reinoController.getHabitanteById))
+app.delete('/personaje_habita_reino/:id_personaje/:id_reino',use(Personaje_habita_reinoController.deleteHabitanteById))
+app.put('/personaje_habita_reino/:id_personaje/:id_reino',use(Personaje_habita_reinoController.updateHabitanteById))
 
 //Endpoints para Reinos
-app.post('/reinos',ReinosController.createReino)
-app.get('/reinos',ReinosController.getReinos)
-app.get('/reinos',ReinosController.getReinoById)
-app.delete('/reinos',ReinosController.deleteReinoById)
-app.put('/reinos',ReinosController.updateReinoById)
+app.post('/reinos',use(ReinosController.createReino))
+app.get('/reinos',use(ReinosController.getReinos))
+app.get('/reinos',use(ReinosController.getReinoById))
+app.delete('/reinos',use(ReinosController.deleteReinoById))
+app.put('/reinos',use(ReinosController.updateReinoById))
 
 //Endpoints para Reino_tiene_defensa
-app.post('/reino_tiene_defensa',Reino_tiene_defensaController.createPosesion)
-app.get('/reino_tiene_defensa',Reino_tiene_defensaController.getPosesiones)
-app.get('/reinos/:id_reino/:id_defensa',Reino_tiene_defensaController.deletePosesionById)
-app.delete('/reinos/:id_reino/:id_defensa',Reino_tiene_defensaController.deletePosesionById)
-app.put('/reino_tiene_defensa/:id_reino/:id_defensa',Reino_tiene_defensaController.updatePosesionById)
+app.post('/reino_tiene_defensa',use(Reino_tiene_defensaController.createPosesion))
+app.get('/reino_tiene_defensa',use(Reino_tiene_defensaController.getPosesiones))
+app.get('/reinos/:id_reino/:id_defensa',use(Reino_tiene_defensaController.deletePosesionById))
+app.delete('/reinos/:id_reino/:id_defensa',use(Reino_tiene_defensaController.deletePosesionById))
+app.put('/reino_tiene_defensa/:id_reino/:id_defensa',use(Reino_tiene_defensaController.updatePosesionById))
 
 //Endpoints para Defensas
-app.post('/defensas',DefensasController.createDefensa)
-app.get('/defensas',DefensasController.getDefensas)
-app.get('/defensas/:id',DefensasController.getDefensaById)
-app.delete('/defensas/:id',DefensasController.deleteDefensaById)
-app.put('/defensas/:id',DefensasController.updateDefensaById)
+app.post('/defensas',use(DefensasController.createDefensa))
+app.get('/defensas',use(DefensasController.getDefensas))
+app.get('/defensas/:id',use(DefensasController.getDefensaById))
+app.delete('/defensas/:id',use(DefensasController.deleteDefensaById))
+app.put('/defensas/:id',use(DefensasController.updateDefensaById))
 
 //Endpoints para Diplomacias
-app.post('/diplomacias',DiplomaciasController.createDiplomacia)
-app.get('/diplomacias',DiplomaciasController.getDiplomacias)
-app.get('/diplomacias/:id_reino1/:id_reino2',DiplomaciasController.getDefensaById)
-app.delete('/diplomacias/:id_reino1/:id_reino2',DiplomaciasController.deleteDefensaById)
-app.put('/diplomacias/:id_reino1/:id_reino2',DiplomaciasController.updateDiplomaciaById)
+app.post('/diplomacias',use(DiplomaciasController.createDiplomacia))
+app.get('/diplomacias',use(DiplomaciasController.getDiplomacias))
+app.get('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.getDefensaById))
+app.delete('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.deleteDefensaById))
+app.put('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.updateDiplomaciaById))
 
 //==========================================================//
 app.get('/', (req, res) => {

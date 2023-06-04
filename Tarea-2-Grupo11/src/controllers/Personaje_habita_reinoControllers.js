@@ -20,7 +20,7 @@ const createHabitante = async (req, res) => {
 
 //Petición para ver un habitante (R)
 
-const getHabitante = async (req, res) => {
+const getHabitantes = async (req, res) => {
     const Habitantes = await prisma.personaje_habita_reino.findMany()
     res.json(Habitantes)
 }
