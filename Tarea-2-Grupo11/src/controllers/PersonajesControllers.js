@@ -1,4 +1,5 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 /**************** CRUD PERSONAJES *************/
 
@@ -7,6 +8,27 @@ import prisma from '../prismaClient.js'
 const createPersonaje = async (req, res) => {
     var { id, nombre, fuerza, fecha_nacimiento, objeto } = req.body
     fecha_nacimiento = new Date(fecha_nacimiento)
+
+    //Debemos ver los errores
+    //Primeramente los errores de null:
+    let not_null = [[nombre, 'nombre'],
+                    [fuerza, 'fuerza'],
+                    [fecha_nacimiento, 'fecha_nacimiento']]
+
+    ErrorController.NotNullCheck(not_null)
+
+
+    //Ahora veremos los errores de sintaxis
+    /*let sintaxis = [[nombre, nombre, 'nombre'],
+                    [fuerza, fuerza, 'fuerza'],
+                    [fecha_nacimiento, 'fecha_nacimiento']]*/
+
+   /* let sintaxis_esperada = [['string', 45],
+                             ['number', 0],
+                             []]*/
+
+    
+
     const Personaje = await prisma.personajes.create({ 
         data: {
             id,

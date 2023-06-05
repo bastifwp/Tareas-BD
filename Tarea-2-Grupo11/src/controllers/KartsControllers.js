@@ -1,4 +1,5 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 /**************** CRUD KARTS *************/
 
@@ -6,6 +7,28 @@ import prisma from '../prismaClient.js'
 
 const createKart = async (req, res) => {
     const { id, modelo, color, velocidad_maxima, id_personaje } = req.body
+
+    //Debemos ver los errores posibles
+    //Debemos ver los errores not null, la fk de id_personaje puede ser null por el tipo de relación
+    let not_null = [[modelo, 'modelo'],
+                    [color, 'color']]
+    
+    ErrorController.NotNullCheck(not_null)
+
+    //Ahora debemos ver los errores de sintaxis
+    let sintaxis = [[modelo, modelo, 'modelo'],
+                    [color, color, 'color'],
+                    [velocidad_maxima, 'velocidad_maxima'],
+                    [id_personaje, 'id_personaje']]
+
+    let sintaxis_esperada = [['string', 45],
+                             ['string', 45],
+                             ['number', 0],
+                             ['number', 0]]
+
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+
     const Kart = await prisma.karts.create({ 
         data: {
             id,

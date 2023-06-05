@@ -2,18 +2,26 @@ import prisma from '../prismaClient.js'
 import ErrorController from './ErrorController.js'
 
 
+
+
+//Si algún atributo es null (según modelo puede serlo) el sintaxis llora 
+
 /**************** CRUD TRABAJOS *************/
 
 //Peticion para crear un trabajo (C)
 const createTrabajo = async (req, res) => {
     const { descripcion, sueldo } = req.body
 
-    let sintaxis = [[typeof descripcion,descripcion,'descripcion'],
-                    [typeof sueldo,sueldo,'sueldo']]
+    //Sintaxis que se recibe
+    let sintaxis = [[descripcion,descripcion,'descripcion'],
+                    [sueldo,sueldo,'sueldo']]
 
+    
+    //La sintaxis experada por cada tipo de dato
     let sintaxis_esperada = [['string',45],
-                             ['number',0]]
+                             ['number' ,0]]
 
+    //Lista con los atributos que no pueden ser null y el nombre correspondiente
     let not_null = [[sueldo,'sueldo']]
 
     //Verificamos que los atributos not null estén presentes

@@ -1,4 +1,5 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 /**************** CRUD DefensaS *************/
 
@@ -6,12 +7,36 @@ import prisma from '../prismaClient.js'
 
 const createDefensa = async (req, res) => {
     const { id, defensa } = req.body
+
+    //Debemos realizar la gestión de errores
+
+    //verificar si se cumplen los atributos que no pueden ser null
+    //Lista con los atributos not null
+    let not_null = [[defensa, 'defensa']] //atributos
+
+    ErrorController.NotNullCheck(not_null)
+
+    //Verificar errores de sintaxix:
+    let sintaxis = [[defensa, defensa, 'defensa']]
+    let sintaxis_esperada = [['string', 45]] //tipo de dato y largo max
+
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+
+   
+
+    //let sintaxis = [[descripcion,descripcion,'descripcion'],
+    //[sueldo,sueldo,'sueldo']]
+
     const Defensa = await prisma.defensas.create({ 
         data: {
             id,
             defensa
         }
     })
+
+
+
     res.json(Defensa) 
 }
 

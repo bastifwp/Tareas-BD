@@ -3,6 +3,13 @@
 //En java existe una clase error, pero solo permite mostar el mensaje de error
 //Para que se muestre un título, estatus (personalizable) y descripcion extenderemos la clase error
 
+//Si hay una coma extra en el body falla random creo
+//Hay que verificar por si se repiten los ids
+//Cuando se cree una clase que ocupe una FK hay que ver que esa fk existe (en el caso de las relaciones que no tengan 0)
+//Error al repetir un atributo en el body
+//Ver que pasa cuando se pone un atributo extra
+
+
 class BaseError extends Error{
     constructor(nombre, codigoHttp, descripcion){
         super(descripcion) //por defecto se llama como BaseError.message
@@ -22,23 +29,37 @@ class BaseError extends Error{
 //[[type, max_lenght/min_quantity, name]]
 
 const SintaxCheck = (sintaxis,sintaxis_esperada) => {
+    
     for (let index = 0; index < sintaxis.length; index++) {
-        if(sintaxis[index][0] !== sintaxis_esperada[index][0]){
+        if(typeof sintaxis[index][0] !==  sintaxis_esperada[index][0] && sintaxis[index][0] !== undefined ){
+            console.log("Se entrega el valor", sintaxis[index][0], " tipo de dato:", typeof sintaxis[index][0])
+            console.log("Se espera el tipo de datt", typeof sintaxis_esperada[index][0])
+            console.log("Resultado de igualdad: ", sintaxis[index][0] !== sintaxis_esperada[index][0] )
+
             throw new ErrorController.BaseError('Tipo invalido',400,'El atributo '+sintaxis[index][2]+' debe ser un '+sintaxis_esperada[index][0])
         }
-
-        if(sintaxis[index][0] == 'number'){
+        
+        //Errores de formato para un número, FALTA AGREGAR EL LÍMITE PARA MAYOR
+        if(typeof sintaxis[index][0] == 'number'){
             if(sintaxis[index][1] < sintaxis_esperada[index][1]){
                 var text = 'El atributo '+sintaxis[index][2]+' debe ser mayor a '+sintaxis_esperada[index][1].toString()
                 throw new ErrorController.BaseError(sintaxis[index][2]+' fuera de rango',400,text)
             }    
         }
-        if(sintaxis[index][0] == 'string'){
+
+        //Errores de fotmato para un string
+        if(typeof sintaxis[index][0] == 'string'){
             if(sintaxis[index][1].length > sintaxis_esperada[index][1]){
                 var text = 'El atributo '+sintaxis[index][2]+' no puede tener mas de '+sintaxis_esperada[index][1].toString()+' caracteres'
                 throw new ErrorController.BaseError(sintaxis[index][2]+' fuera de rango',400,text)
             }
         }
+
+        //Errores de formato para un booleano
+        if(typeof sintaxis[index][0] == 'boolean'){
+            
+        }
+
     }
 }
 

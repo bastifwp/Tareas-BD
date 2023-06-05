@@ -9,10 +9,29 @@ const createReino = async (req, res) => {
     const { id, nombre, ubicacion, superficie } = req.body
 
     //Verificamos que los atributos not null esten presentes
-    ErrorController.ReinosNotNullCheck(nombre,ubicacion,superficie)
+    let not_null = [[nombre, 'nombre'],
+                    [ubicacion, 'ubicacion'],
+                    [superficie, 'superficie']]
+
+    ErrorController.NotNullCheck(not_null)
+
+
+    //Ahora veamos los errores de sintaxis
+    let sintaxis = [[nombre, nombre, 'nombre'],
+                    [ubicacion, ubicacion, 'ubicacion'],
+                    [superficie, superficie, 'superficie']]
+
+    let sintaxis_esperada = [['string', 45],
+                             ['string', 45],
+                             ['number', 0]]
+    
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+    
+    //ErrorController.ReinosNotNullCheck(nombre,ubicacion,superficie)
 
     //Revisamos atributos
-    ErrorController.ReinosSintaxCheck(nombre,ubicacion,superficie)
+    //ErrorController.ReinosSintaxCheck(nombre,ubicacion,superficie)
 
     const Reino = await prisma.reinos.create({ 
         data: {

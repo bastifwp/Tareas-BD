@@ -8,6 +8,9 @@ import ErrorController from './ErrorController.js'
 const createHabitante = async (req, res) => {
     var { id_personaje, id_reino, fecha_registro, es_gobernante } = req.body
     fecha_registro = Date(fecha_registro)
+    console.log("Tipo de dato fecha de registro: ", typeof fecha_registro)
+
+
     const Habitante = await prisma.personaje_habita_reino.create({ 
         data: {
             id_personaje,

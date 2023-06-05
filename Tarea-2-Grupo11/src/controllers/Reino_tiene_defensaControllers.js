@@ -14,6 +14,8 @@ const createPosesion = async (req, res) => {
     //Revisamos atributos
     ErrorController.Reino_tiene_DefensaSintaxCheck(id_reino,id_defensa)
 
+    
+
     const Posesion = await prisma.reino_tiene_defensa.create({ //Creo que aquí podemos ver los errores
         data: {
             id_reino,

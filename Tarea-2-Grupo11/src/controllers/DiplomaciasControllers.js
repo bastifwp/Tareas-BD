@@ -1,15 +1,39 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 /**************** CRUD diplomacias *************/
 
 //Peticion para crear un Diplomacia (C)
 
 const createDiplomacia = async (req, res) => {
-    const { id_reino1, id_reino2, es_aliado } = req.body
+    const { id_reino_1, id_reino_2, es_aliado } = req.body
+
+    //Verificaremos lo errores de los atributos null: 
+    let not_null = [[es_aliado, 'es_aliado'],
+                    [id_reino_1, 'id_reino_1'],
+                    [id_reino_2, 'id_reino_2']]
+
+    ErrorController.NotNullCheck(not_null)
+
+
+    //Ahora veremos si la sintaxis es la correcta
+    let sintaxis = [[es_aliado, es_aliado, 'es_aliado'],
+                    [id_reino_1, id_reino_1, 'id_reino_1'],
+                    [id_reino_2, id_reino_2, 'id_reino_2']]
+
+    //No se si esta wea va a funcionar por lo de los rangos
+    let sintaxis_esperada = [['boolean', 0],
+                             ['number', 0],
+                             ['number', 0]]
+    
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+                             
+
+
     const Diplomacia = await prisma.diplomacias.create({ 
         data: {
-            id_reino1,
-            id_reino2,
+            id_reino_1,
+            id_reino_2,
             es_aliado
         }
     })
