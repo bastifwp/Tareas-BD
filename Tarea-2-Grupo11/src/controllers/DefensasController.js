@@ -6,7 +6,7 @@ import ErrorController from './ErrorController.js'
 //Peticion para crear un Defensa (C)
 
 const createDefensa = async (req, res) => {
-    const { id, defensa } = req.body
+    const { defensa } = req.body
 
     //Debemos realizar la gestión de errores
 

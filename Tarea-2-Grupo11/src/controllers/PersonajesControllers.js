@@ -7,7 +7,17 @@ import ErrorController from './ErrorController.js'
 
 const createPersonaje = async (req, res) => {
     var { id, nombre, fuerza, fecha_nacimiento, objeto } = req.body
-    fecha_nacimiento = new Date(fecha_nacimiento)
+    
+    //Quiero guardar el string para luego poder usar expresiones regulares para verificar el formato
+    let string_fecha_nacimiento = fecha_nacimiento 
+
+    //Si no se hace esto se crea un tipo de dato objeto llamado "Invalid"
+    if(fecha_nacimiento != null){
+        fecha_nacimiento = new Date(fecha_nacimiento)
+    }
+
+    console.log("Tipo de dato de fecha nacimiento: ", typeof fecha_nacimiento )
+
 
     //Debemos ver los errores
     //Primeramente los errores de null:
@@ -19,15 +29,16 @@ const createPersonaje = async (req, res) => {
 
 
     //Ahora veremos los errores de sintaxis
-    /*let sintaxis = [[nombre, nombre, 'nombre'],
+    let sintaxis = [[nombre, nombre, 'nombre'],
                     [fuerza, fuerza, 'fuerza'],
-                    [fecha_nacimiento, 'fecha_nacimiento']]*/
+                    [fecha_nacimiento, string_fecha_nacimiento, 'fecha_nacimiento']]
 
-   /* let sintaxis_esperada = [['string', 45],
+    let sintaxis_esperada = [['string', 45],
                              ['number', 0],
-                             []]*/
+                             ['object', 45]] //Date es tipo object, no es necesario pasarle el rango máximo, pues una re se encarga del formato completo
 
     
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
 
     const Personaje = await prisma.personajes.create({ 
         data: {

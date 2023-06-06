@@ -7,8 +7,37 @@ import ErrorController from './ErrorController.js'
 
 const createHabitante = async (req, res) => {
     var { id_personaje, id_reino, fecha_registro, es_gobernante } = req.body
-    fecha_registro = Date(fecha_registro)
-    console.log("Tipo de dato fecha de registro: ", typeof fecha_registro)
+
+    //Quiero guardar el string para luego poder usar expresiones regulares para verificar el formato
+    let string_fecha_registro = fecha_registro 
+
+    //Solo si se escribe algo se pasa a un Date
+    if(fecha_registro != null){
+        fecha_registro = new Date(fecha_registro)
+    }
+
+
+    //Verificaremos los errores
+    //Primeramente verificamos los notnull
+    let not_null = [[id_personaje, 'id_personaje'],
+                    [id_reino, 'id_reino'],
+                    [fecha_registro, 'fecha_registro'],
+                    [es_gobernante, 'es_gobernante']]
+
+    ErrorController.NotNullCheck(not_null)
+
+    //Ahora debemos verificar la sintaxis
+    let sintaxis = [[id_personaje, id_personaje, 'id_personaje'],
+                    [id_reino, id_reino, 'id_reino'],
+                    [fecha_registro, string_fecha_registro, 'fecha_registro'],
+                    [es_gobernante, es_gobernante, 'es_gobernante']]
+
+    let sintaxis_esperada = [['number', 0],
+                             ['number', 0],
+                             ['object', 45], //Date es de tipo 'object'
+                             ['boolean', 0]]
+
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
 
 
     const Habitante = await prisma.personaje_habita_reino.create({ 

@@ -28,14 +28,15 @@ class BaseError extends Error{
 //sintaxis es un array de condiciones que debe cumplir el atributo
 //[[type, max_lenght/min_quantity, name]]
 
+const DateCheck = (date_recibida) => {
+
+
+}
+
 const SintaxCheck = (sintaxis,sintaxis_esperada) => {
     
     for (let index = 0; index < sintaxis.length; index++) {
         if(typeof sintaxis[index][0] !==  sintaxis_esperada[index][0] && sintaxis[index][0] !== undefined ){
-            console.log("Se entrega el valor", sintaxis[index][0], " tipo de dato:", typeof sintaxis[index][0])
-            console.log("Se espera el tipo de datt", typeof sintaxis_esperada[index][0])
-            console.log("Resultado de igualdad: ", sintaxis[index][0] !== sintaxis_esperada[index][0] )
-
             throw new ErrorController.BaseError('Tipo invalido',400,'El atributo '+sintaxis[index][2]+' debe ser un '+sintaxis_esperada[index][0])
         }
         
@@ -58,6 +59,21 @@ const SintaxCheck = (sintaxis,sintaxis_esperada) => {
         //Errores de formato para un booleano
         if(typeof sintaxis[index][0] == 'boolean'){
             
+        }
+
+        //Erorres de formato en un date:
+        if(sintaxis[index][0] instanceof Date){
+
+            //Debemos verificar que se cumpla el formato AAAA/MM/DD ocupando expresiones regulares jujuuu
+            //Como es un reino de fantasía asumimos que todos los meses tienen 28 dias
+            const re = new RegExp("[0-9][0-9][0-9][0-9]\-((0[1-9])|(1[0-2]))\-((0[1-9])|(1[0-9])|(2[0-8]))$")
+            console.log("te la presento: ", sintaxis[index][1].toString())
+
+            //Probamos si el string de date es válido (el string está en la posicion 1)
+            if(!re.test(sintaxis[index][1])){
+                throw new ErrorController.BaseError("Formato de fecha erroeno", 400, "Formato esperado : AAAA\-MM\-DD (en el mundo champiñon cada mes tiene 28 días)" )
+            }
+
         }
 
     }

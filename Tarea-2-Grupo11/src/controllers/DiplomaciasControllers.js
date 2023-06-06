@@ -21,12 +21,15 @@ const createDiplomacia = async (req, res) => {
                     [id_reino_1, id_reino_1, 'id_reino_1'],
                     [id_reino_2, id_reino_2, 'id_reino_2']]
 
-    //No se si esta wea va a funcionar por lo de los rangos
+    //No se si esta wea va a funcionar por lo de los rangos del booleano
     let sintaxis_esperada = [['boolean', 0],
                              ['number', 0],
                              ['number', 0]]
     
     ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+
+    //Debemos verificar que los id que se envían existen 
                              
 
 

@@ -9,10 +9,10 @@ const createPosesion = async (req, res) => {
     const { id_reino, id_defensa } = req.body
 
     //Verificamos que los atributos not null esten presentes
-    ErrorController.Reino_tiene_DefensaNotNullCheck(id_reino,id_defensa)
+    
 
     //Revisamos atributos
-    ErrorController.Reino_tiene_DefensaSintaxCheck(id_reino,id_defensa)
+
 
     
 
