@@ -16,8 +16,6 @@ const createPersonaje = async (req, res) => {
         fecha_nacimiento = new Date(fecha_nacimiento)
     }
 
-    console.log("Tipo de dato de fecha nacimiento: ", typeof fecha_nacimiento )
-
 
     //Debemos ver los errores
     //Primeramente los errores de null:

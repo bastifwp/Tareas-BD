@@ -4,10 +4,11 @@
 //Para que se muestre un título, estatus (personalizable) y descripcion extenderemos la clase error
 
 //Si hay una coma extra en el body falla random creo
-//Hay que verificar por si se repiten los ids
+//Hay que verificar por si se repiten los ids (cuando se crean cosas con pk compuestas, en los otros casos simplemente no se debe pedir id)
 //Cuando se cree una clase que ocupe una FK hay que ver que esa fk existe (en el caso de las relaciones que no tengan 0)
 //Error al repetir un atributo en el body
 //Ver que pasa cuando se pone un atributo extra
+//Ver como validar con la sintaxis los q son esperados y los recibidos, creo que sólo agrege a sintaxis y sintaxis_esperada los q son not_null
 
 
 class BaseError extends Error{
@@ -28,22 +29,24 @@ class BaseError extends Error{
 //sintaxis es un array de condiciones que debe cumplir el atributo
 //[[type, max_lenght/min_quantity, name]]
 
-const DateCheck = (date_recibida) => {
-
-
-}
-
 const SintaxCheck = (sintaxis,sintaxis_esperada) => {
-    
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     for (let index = 0; index < sintaxis.length; index++) {
+        console.log("Estoy en: ", sintaxis[index][0]) //&& !(sintaxis[index][0] instanceof Date)
         if(typeof sintaxis[index][0] !==  sintaxis_esperada[index][0] && sintaxis[index][0] !== undefined ){
+            console.log("Holas, entre aquí gracias a: ", sintaxis[index][0])
+
             throw new ErrorController.BaseError('Tipo invalido',400,'El atributo '+sintaxis[index][2]+' debe ser un '+sintaxis_esperada[index][0])
         }
         
+        console.log("Terminé el primer condicional")
+
         //Errores de formato para un número, FALTA AGREGAR EL LÍMITE PARA MAYOR
         if(typeof sintaxis[index][0] == 'number'){
+            console.log("Hola, estoy acato")
+
             if(sintaxis[index][1] < sintaxis_esperada[index][1]){
-                var text = 'El atributo '+sintaxis[index][2]+' debe ser mayor a '+sintaxis_esperada[index][1].toString()
+                var text = 'El atributo '+sintaxis[index][2]+' debe ser mayor a '+ sintaxis_esperada[index][1].toString()
                 throw new ErrorController.BaseError(sintaxis[index][2]+' fuera de rango',400,text)
             }    
         }

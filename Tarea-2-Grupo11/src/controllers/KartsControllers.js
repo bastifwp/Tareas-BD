@@ -6,7 +6,7 @@ import ErrorController from './ErrorController.js'
 //Peticion para crear un kart (C)
 
 const createKart = async (req, res) => {
-    const { id, modelo, color, velocidad_maxima, id_personaje } = req.body
+    const { modelo, color, velocidad_maxima, id_personaje } = req.body
 
     //Debemos ver los errores posibles
     //Debemos ver los errores not null, la fk de id_personaje puede ser null por el tipo de relación
@@ -18,8 +18,8 @@ const createKart = async (req, res) => {
     //Ahora debemos ver los errores de sintaxis
     let sintaxis = [[modelo, modelo, 'modelo'],
                     [color, color, 'color'],
-                    [velocidad_maxima, 'velocidad_maxima'],
-                    [id_personaje, 'id_personaje']]
+                    [velocidad_maxima, velocidad_maxima, 'velocidad_maxima'],
+                    [id_personaje, id_personaje, 'id_personaje']]
 
     let sintaxis_esperada = [['string', 45],
                              ['string', 45],
