@@ -31,7 +31,6 @@ const createKart = async (req, res) => {
 
     const Kart = await prisma.karts.create({ 
         data: {
-            id,
             modelo,
             color,
             velocidad_maxima,
@@ -52,7 +51,7 @@ const getKartById = async (req, res) => {
     const {id} = req.params
     const Kart = await prisma.karts.findUnique({
         where: {
-            id: id
+            id: Number(id)
         }
     })
     res.json(Kart)
@@ -65,7 +64,7 @@ const updateKartById = async (req, res) => {
     const {modelo,color,velocidad_maxima,id_personaje} = req.body
     const Kart = await prisma.karts.update({
         where : {
-            id: id
+            id: Number(id)
         },
         data : {
             modelo: modelo,
@@ -84,7 +83,7 @@ const deleteKartById = async (req, res) => {
     const {id} = req.params
     const deleteKart = await prisma.karts.delete({
         where:{
-            id: id
+            id: Number(id)
         },
     })
     res.json(deleteKart) 

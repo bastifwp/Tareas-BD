@@ -8,7 +8,10 @@ import ReinosController from './controllers/ReinosControllers.js';
 import Reino_tiene_defensaController from './controllers/Reino_tiene_defensaControllers.js';
 import DefensasController from './controllers/DefensasController.js';
 import DiplomaciasController from './controllers/DiplomaciasControllers.js';
+import EndpointsController from './controllers/EndpointsController.js';
 import morgan from 'morgan';
+
+
 
 const ENV = process.env;
 const app = express();
@@ -87,9 +90,13 @@ app.put('/defensas/:id',use(DefensasController.updateDefensaById))
 //Endpoints para Diplomacias
 app.post('/diplomacias',use(DiplomaciasController.createDiplomacia))
 app.get('/diplomacias',use(DiplomaciasController.getDiplomacias))
-app.get('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.getDefensaById))
-app.delete('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.deleteDefensaById))
+app.get('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.getDiplomaciaById))
+app.delete('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.deleteDiplomaciaById))
 app.put('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.updateDiplomaciaById))
+
+//Endpoints
+app.get('/top5personajesConMasFuerza', use(EndpointsController.top5Fuerza))
+app.get('/personajeConMasKarts', use(EndpointsController.masKarts))
 
 //==========================================================//
 app.get('/', (req, res) => {

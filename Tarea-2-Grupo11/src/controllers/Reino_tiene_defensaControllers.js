@@ -9,10 +9,20 @@ const createPosesion = async (req, res) => {
     const { id_reino, id_defensa } = req.body
 
     //Verificamos que los atributos not null esten presentes
-    
+    let not_null = [[id_reino, 'id_reino '],
+                    [id_defensa, 'id_defensa']]
 
-    //Revisamos atributos
+    ErrorController.NotNullCheck(not_null)
 
+
+    //Revisamos que la syntaxis esté correcta:
+    let sintaxis = [[id_reino, id_reino, 'id_reino'],
+                    [id_defensa, id_defensa, 'id_defensa']]
+
+    let sintaxis_esperada = [['number', 0],
+                             ['number', 0]]
+
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
 
     
 

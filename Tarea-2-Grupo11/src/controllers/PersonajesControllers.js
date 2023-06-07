@@ -94,7 +94,7 @@ const deletePersonajeById = async (req, res) => {
     const {id} = req.params
     const deletePersonaje = await prisma.personajes.delete({
         where:{
-            id: id
+            id: Number(id)
         },
     })
     res.json(deletePersonaje) //Devuelve el trabajo que eliminó

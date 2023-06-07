@@ -4,8 +4,6 @@ import ErrorController from './ErrorController.js'
 
 
 
-//Si algún atributo es null (según modelo puede serlo) el sintaxis llora 
-
 /**************** CRUD TRABAJOS *************/
 
 //Peticion para crear un trabajo (C)

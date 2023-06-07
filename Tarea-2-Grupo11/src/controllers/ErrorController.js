@@ -30,20 +30,18 @@ class BaseError extends Error{
 //[[type, max_lenght/min_quantity, name]]
 
 const SintaxCheck = (sintaxis,sintaxis_esperada) => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
     for (let index = 0; index < sintaxis.length; index++) {
-        console.log("Estoy en: ", sintaxis[index][0]) //&& !(sintaxis[index][0] instanceof Date)
+
         if(typeof sintaxis[index][0] !==  sintaxis_esperada[index][0] && sintaxis[index][0] !== undefined ){
             console.log("Holas, entre aquí gracias a: ", sintaxis[index][0])
 
             throw new ErrorController.BaseError('Tipo invalido',400,'El atributo '+sintaxis[index][2]+' debe ser un '+sintaxis_esperada[index][0])
         }
         
-        console.log("Terminé el primer condicional")
 
         //Errores de formato para un número, FALTA AGREGAR EL LÍMITE PARA MAYOR
         if(typeof sintaxis[index][0] == 'number'){
-            console.log("Hola, estoy acato")
 
             if(sintaxis[index][1] < sintaxis_esperada[index][1]){
                 var text = 'El atributo '+sintaxis[index][2]+' debe ser mayor a '+ sintaxis_esperada[index][1].toString()
@@ -70,7 +68,6 @@ const SintaxCheck = (sintaxis,sintaxis_esperada) => {
             //Debemos verificar que se cumpla el formato AAAA/MM/DD ocupando expresiones regulares jujuuu
             //Como es un reino de fantasía asumimos que todos los meses tienen 28 dias
             const re = new RegExp("[0-9][0-9][0-9][0-9]\-((0[1-9])|(1[0-2]))\-((0[1-9])|(1[0-9])|(2[0-8]))$")
-            console.log("te la presento: ", sintaxis[index][1].toString())
 
             //Probamos si el string de date es válido (el string está en la posicion 1)
             if(!re.test(sintaxis[index][1])){
