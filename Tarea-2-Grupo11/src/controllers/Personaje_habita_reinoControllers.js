@@ -76,12 +76,12 @@ const getHabitanteById = async (req, res) => {
 const updateHabitanteById = async (req, res) => {
     const {id_reino,id_personaje} = req.params
     var {fecha_registro,es_gobernante} = req.body
-    fecha_registro = Date(f)
+    fecha_registro = new Date(fecha_registro)
     const Habitante = await prisma.personaje_habita_reino.update({
         where : {
             id_reino_id_personaje :{
-                id_reino: id_reino,
-                id_personaje: id_personaje
+                id_reino: Number(id_reino),
+                id_personaje: Number(id_personaje)
             }
         },
         data : {

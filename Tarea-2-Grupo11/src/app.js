@@ -97,7 +97,9 @@ app.put('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.updateDip
 //Endpoints
 app.get('/top5personajesConMasFuerza', use(EndpointsController.top5Fuerza))
 app.get('/personajeConMasKarts', use(EndpointsController.masKarts))
-
+app.get('/api/cantidadHabitantes/:id_reino',use(EndpointsController.cantidadHabitantes))
+app.get('/api/gobernante/:id_reino', use(EndpointsController.gobernante))
+app.get('/api/gobernante', use(EndpointsController.gobernante))
 //==========================================================//
 app.get('/', (req, res) => {
     res.json({ message: 'Hello World!!' });

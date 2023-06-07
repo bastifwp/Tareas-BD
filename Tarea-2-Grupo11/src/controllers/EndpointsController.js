@@ -63,11 +63,131 @@ const masKarts = async (req, res) => {
     res.json(json_return) 
 }
 
+const cantidadHabitantes = async (req, res) => {
+
+    const {id_reino} = req.params
+
+    //Primero obtenemos todos los habitantes del reino
+    const Habitantes = await prisma.personaje_habita_reino.findMany({
+        where:{
+            id_reino : Number(id_reino)
+        }
+    })
+
+    //Luego contamos los habitantes
+    const n_habitantes = Habitantes.length
+
+    //Finalmente buscamos el nombre del reino al cual le pertenece la id y mostramos
+    const Reino = prisma.reinos.findUnique({
+        where: {
+            id : Number(id_reino)
+        }
+    })
+
+    console.log(Habitantes[0])
+
+    let json_return = {
+        "Nombre reino" : Reino.nombre,
+        "Cantidad de habitantes" : n_habitantes
+    }
+
+    res.json(json_return)
+}
+
+const gobernante = async (req, res) => {
+
+    var {id_reino} = req.params
+
+    if(id_reino == null){
+        
+        //Buscamos habitantes 
+        var Habitantes = await prisma.personaje_habita_reino.findMany()
+
+        //Estructura del diccionario: {id_reino1:[id_gobernante1, id_gobernante2...], }
+        let Gobernantes = {}
+
+
+        for (let index = 0; index < Habitantes.length; index++) {
+            if(!(Habitantes[index].id_reino in Gobernantes)){
+                Gobernantes[Habitantes[index].id_reino] = []
+            }
+            if(Habitantes[index].es_gobernante == true){
+                Gobernantes[Habitantes[index].id_reino].push(Habitantes[index].id_personaje)
+            }
+        }
+
+        let Json = {}
+
+        for (const key of Object.keys(Gobernantes)) {
+            var Reino = await prisma.reinos.findUnique({
+                where:{
+                    id : Number(key)
+                }
+            })
+            var nombreReino = Reino.nombre
+            if(!(nombreReino in Json)){
+                Json[nombreReino] = []
+            }
+            for (let index = 0; index < Gobernantes[key].length; index++) {
+                var Personaje = await prisma.personajes.findUnique({
+                    where:{
+                        id : Number(Gobernantes[key][index])
+                    }
+                })
+                var nombrePersonaje = Personaje.nombre
+                Json[nombreReino].push(nombrePersonaje)
+            }
+        }
+
+        res.json(Json)
+
+    }
+    else{
+
+        var Reino = await prisma.reinos.findUnique({
+            where:{
+                id : Number(id_reino)
+            }
+        })
+
+
+        var nombreReino = Reino.nombre
+
+        var Habitantes = await prisma.personaje_habita_reino.findMany({
+            where:{
+                id_reino: Number(id_reino)
+            }
+        })
+
+        var nombresGobernantes = []
+        var personaje = null
+
+        for (let index = 0; index < Habitantes.length; index++) {
+            if(Habitantes[index].es_gobernante == true){
+                console.log(Habitantes[index].id_personaje)
+                personaje = await prisma.personajes.findUnique({
+                    where:{
+                        id : Habitantes[index].id_personaje
+                    }
+                })
+                nombresGobernantes.push(personaje.nombre)
+            }
+        }
+
+        let Json = {"Nombre reino" : nombreReino,
+                    "Gobernantes" : nombresGobernantes}
+        res.json(Json)
+        
+    }
+}
+
 
 
 const EndpointsController =  {
     top5Fuerza,
-    masKarts
+    masKarts,
+    cantidadHabitantes,
+    gobernante
 }
 
 export default EndpointsController
