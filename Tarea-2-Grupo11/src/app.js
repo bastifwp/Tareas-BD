@@ -69,9 +69,9 @@ app.put('/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_r
 //Endpoints para Reinos
 app.post('/reinos',use(ReinosController.createReino))
 app.get('/reinos',use(ReinosController.getReinos))
-app.get('/reinos',use(ReinosController.getReinoById))
-app.delete('/reinos',use(ReinosController.deleteReinoById))
-app.put('/reinos',use(ReinosController.updateReinoById))
+app.get('/reinos/:id',use(ReinosController.getReinoById))
+app.delete('/reinos/:id',use(ReinosController.deleteReinoById))
+app.put('/reinos/:id',use(ReinosController.updateReinoById))
 
 //Endpoints para Reino_tiene_defensa
 app.post('/reino_tiene_defensa',use(Reino_tiene_defensaController.createPosesion))
@@ -95,8 +95,8 @@ app.delete('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.delete
 app.put('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.updateDiplomaciaById))
 
 //Endpoints
-app.get('/top5personajesConMasFuerza', use(EndpointsController.top5Fuerza))
-app.get('/personajeConMasKarts', use(EndpointsController.masKarts))
+app.get('/api/top5personajesConMasFuerza', use(EndpointsController.top5Fuerza))
+app.get('/api/personajeConMasKarts', use(EndpointsController.masKarts))
 app.get('/api/cantidadHabitantes/:id_reino',use(EndpointsController.cantidadHabitantes))
 app.get('/api/gobernante/:id_reino', use(EndpointsController.gobernante))
 app.get('/api/gobernante', use(EndpointsController.gobernante))

@@ -70,7 +70,7 @@ const getPersonajeById = async (req, res) => {
 //Petición para Actualizar un personaje (U)
 
 const updatePersonajeById = async (req, res) => {
-    const { id } = req.params
+    const {id} = req.params
     var {nombre,fuerza,fecha_nacimiento,objeto} = req.body
     fecha_nacimiento = new Date(fecha_nacimiento)
     const Personaje = await prisma.personajes.update({
@@ -85,19 +85,28 @@ const updatePersonajeById = async (req, res) => {
         },
 
     })
-    res.json(Personaje)
+        res.json(Personaje)
 }
 
 //Petición para borrar un personaje (D)
 
 const deletePersonajeById = async (req, res) => {
     const {id} = req.params
-    const deletePersonaje = await prisma.personajes.delete({
+    
+    const Personaje = await prisma.personajes.findUnique({
         where:{
             id: Number(id)
         },
     })
-    res.json(deletePersonaje) //Devuelve el trabajo que eliminó
+    ErrorController.ExistenceCheck(Personaje,"personaje")
+
+    await prisma.personajes.delete({
+        where:{
+            id: Personaje.id
+        }, 
+    })
+
+    res.json(Personaje) //Devuelve el trabajo que eliminó
 }
 
 const PersonajesController = {

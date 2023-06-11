@@ -36,7 +36,7 @@ model karts {
   modelo           String @db.VarChar(45)
   color            String @db.VarChar(45)
   velocidad_maxima Int?
-  personaje        personajes? @relation(fields: [id_personaje], references: [id]) 
+  personaje        personajes? @relation(fields: [id_personaje], references: [id], onDelete: SetNull) 
   id_personaje     Int? 
 }
 
@@ -59,9 +59,9 @@ model defensas {
 
 model personaje_tiene_trabajo {
   id_trabajo    Int
-  trabajo       trabajos   @relation(fields: [id_trabajo], references: [id])
+  trabajo       trabajos   @relation(fields: [id_trabajo], references: [id], onDelete: Cascade)
   id_personaje  Int
-  personaje     personajes @relation(fields: [id_personaje], references: [id])
+  personaje     personajes @relation(fields: [id_personaje], references: [id], onDelete: Cascade)
   fecha_inicio  DateTime   @db.Date
   fecha_termino DateTime?  @db.Date
   @@id([id_trabajo, id_personaje])
@@ -69,9 +69,9 @@ model personaje_tiene_trabajo {
 
 model personaje_habita_reino {
   id_personaje   Int 
-  personaje      personajes @relation(fields: [id_personaje], references: [id])
+  personaje      personajes @relation(fields: [id_personaje], references: [id], onDelete: Cascade)
   id_reino       Int
-  reino          reinos     @relation(fields: [id_reino], references: [id])
+  reino          reinos     @relation(fields: [id_reino], references: [id], onDelete: Cascade)
   fecha_registro DateTime   @db.Timestamp(3)
   es_gobernante  Boolean
   @@id([id_reino, id_personaje])
@@ -79,17 +79,17 @@ model personaje_habita_reino {
 
 model diplomacias {
   id_reino_1 Int
-  reino_1    reinos  @relation(fields: [id_reino_1], references: [id], name: "considera_aliado")
+  reino_1    reinos  @relation(fields: [id_reino_1], references: [id], name: "considera_aliado", onDelete: Cascade)
   id_reino_2 Int
-  reino_2    reinos  @relation(fields: [id_reino_2], references: [id], name: "lo_considera_aliado")
+  reino_2    reinos  @relation(fields: [id_reino_2], references: [id], name: "lo_considera_aliado", onDelete: Cascade)
   es_aliado  Boolean
   @@id([id_reino_1, id_reino_2])
 }
 
 model reino_tiene_defensa {
   id_reino   Int
-  reino      reinos   @relation(fields: [id_reino], references: [id])
+  reino      reinos   @relation(fields: [id_reino], references: [id], onDelete: Cascade)
   id_defensa Int
-  defensa    defensas @relation(fields: [id_defensa], references: [id])
+  defensa    defensas @relation(fields: [id_defensa], references: [id], onDelete: Cascade)
   @@id([id_defensa,id_reino])
 }

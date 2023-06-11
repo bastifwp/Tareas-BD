@@ -1,4 +1,5 @@
 import prisma from '../prismaClient.js'
+import ErrorController from './ErrorController.js'
 
 
 
@@ -67,22 +68,24 @@ const cantidadHabitantes = async (req, res) => {
 
     const {id_reino} = req.params
 
-    //Primero obtenemos todos los habitantes del reino
+    const Reino = prisma.reinos.findUnique({
+        where: {
+            id : Number(id_reino)
+        }
+    })
+
+    ErrorController.ExistenceCheck(Reino,'reino')
+
+    //obtenemos todos los habitantes del reino
     const Habitantes = await prisma.personaje_habita_reino.findMany({
         where:{
-            id_reino : Number(id_reino)
+            id_reino : Reino.id
         }
     })
 
     //Luego contamos los habitantes
     const n_habitantes = Habitantes.length
 
-    //Finalmente buscamos el nombre del reino al cual le pertenece la id y mostramos
-    const Reino = prisma.reinos.findUnique({
-        where: {
-            id : Number(id_reino)
-        }
-    })
 
     console.log(Habitantes[0])
 
@@ -149,6 +152,8 @@ const gobernante = async (req, res) => {
                 id : Number(id_reino)
             }
         })
+
+        ErrorController.ExistenceCheck(Reino,'reino')
 
 
         var nombreReino = Reino.nombre

@@ -22,12 +22,6 @@ const createDefensa = async (req, res) => {
 
     ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
 
-
-   
-
-    //let sintaxis = [[descripcion,descripcion,'descripcion'],
-    //[sueldo,sueldo,'sueldo']]
-
     const Defensa = await prisma.defensas.create({ 
         data: {
             id,
@@ -51,9 +45,10 @@ const getDefensaById = async (req, res) => {
     const {id} = req.params
     const Defensa = await prisma.defensas.findUnique({
         where: {
-            id: id
+            id: Number(id)
         }
     })
+    ErrorController.ExistenceCheck(Defensa,'defensa')
     res.json(Defensa)
 }
 
@@ -62,9 +57,26 @@ const getDefensaById = async (req, res) => {
 const updateDefensaById = async (req, res) => {
     const {id} = req.params
     const {defensa} = req.body
-    const Defensa = await prisma.defensas.update({
+    const Defensa = await prisma.defensas.findUnique({
         where : {
-            id:id
+            id:Number(id)
+        },
+    })
+    ErrorController.ExistenceCheck(Defensa,'defensa')
+
+    let not_null = [[defensa, 'defensa']] //atributos
+
+    ErrorController.NotNullCheck(not_null)
+
+    //Verificar errores de sintaxix:
+    let sintaxis = [[defensa, defensa, 'defensa']]
+    let sintaxis_esperada = [['string', 45]] //tipo de dato y largo max
+
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+    await prisma.defensas.update({
+        where: {
+            id : Defensa.id
         },
         data : {
             defensa: defensa
@@ -77,9 +89,17 @@ const updateDefensaById = async (req, res) => {
 
 const deleteDefensaById = async (req, res) => {
     const {id} = req.params
+
+    const Defensa = await prisma.defensas.findUnique({
+        where : {
+            id:Number(id)
+        },
+    })
+    ErrorController.ExistenceCheck(Defensa,'defensa')
+
     const deleteDefensa = await prisma.defensas.delete({
         where:{
-            id: id
+            id: Defensa.id
         },
     })
     res.json(deleteDefensa) 

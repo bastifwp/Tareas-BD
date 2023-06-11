@@ -89,7 +89,7 @@ const deleteReinoById = async (req, res) => {
     const {id} = req.params
     const deleteReino = await prisma.reinos.delete({
         where:{
-            id: id
+            id: Number(id)
         },
     })
     res.json(deleteReino) 
