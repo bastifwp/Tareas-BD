@@ -61,7 +61,7 @@ const getPersonajeById = async (req, res) => {
     const {id} = req.params
     const Personaje = await prisma.personajes.findUnique({
         where: {
-            id: id
+            id: Number(id)
         }
     })
     res.json(Personaje)
@@ -75,7 +75,7 @@ const updatePersonajeById = async (req, res) => {
     fecha_nacimiento = new Date(fecha_nacimiento)
     const Personaje = await prisma.personajes.update({
         where : {
-            id: id
+            id: Number(id)
         },
         data : {
             nombre: nombre,

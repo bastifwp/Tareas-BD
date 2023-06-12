@@ -36,7 +36,7 @@ const masKarts = async (req, res) => {
     }
 
     //Una vez tenemos cuántos karts tiene cada personaje debemos identificar el que tiene más:
-    let id_personaje = NaN
+    let id_personaje = null
     let n_karts = 0
 
     //Recorremos el diccionario y ocupamos algoritmo para encontrar el mayor
@@ -53,10 +53,16 @@ const masKarts = async (req, res) => {
             id: Number(id_personaje)
         }
     })
-
+    
+    if (personaje_return != null){
+        var nombre = personaje_return.nombre
+    }
+    else{
+        var nombre = ''
+    }
     //Ahora guardamos lo que debemos devolver
     let json_return = {
-        "Nombre" : personaje_return.nombre,
+        "Nombre" : nombre,
         "Cantidad de Karts" : n_karts
     }
 

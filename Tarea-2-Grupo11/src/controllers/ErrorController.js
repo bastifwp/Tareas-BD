@@ -68,9 +68,9 @@ const SintaxCheck = (sintaxis,sintaxis_esperada) => {
             //Debemos verificar que se cumpla el formato AAAA/MM/DD ocupando expresiones regulares jujuuu
             //Como es un reino de fantasía asumimos que todos los meses tienen 28 dias
 
-            meses_30 = '|((04|06|09|11)-(((0[1-9])|(1[0-9])|(2[0-9])|(30)))'
-            meses_31 = '|((01|03|05|07|08|10|12)-((0[1-9])|(1[0-9])|(2[0-9])|(3[0-1])))'
-            febrero_perkin = '(02-((0[1-9])|(1[0-9])|(2[0-8])))'
+            var meses_30 = '|((04|06|09|11)-((0[1-9])|(1[0-9])|(2[0-9])|(30)))'
+            var meses_31 = '|((01|03|05|07|08|10|12)-((0[1-9])|(1[0-9])|(2[0-9])|(3[0-1])))'
+            var febrero_perkin = '(02-((0[1-9])|(1[0-9])|(2[0-8])))'
 
             const re = new RegExp("[0-9][0-9][0-9][0-9]\-"+febrero_perkin+meses_30+meses_31+"$")
 

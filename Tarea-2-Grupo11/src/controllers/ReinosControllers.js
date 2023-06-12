@@ -55,7 +55,7 @@ const getReinoById = async (req, res) => {
     const {id} = req.params
     const Reino = await prisma.reinos.findUnique({
         where: {
-            id: id
+            id: Number(id)
         }
     })
     res.json(Reino)
@@ -68,11 +68,10 @@ const updateReinoById = async (req, res) => {
     const {nombre,ubicacion,superficie} = req.body
 
     //Revisamos atributos
-    ErrorController.ReinosSintaxCheck(nombre,ubicacion,superficie)
 
     const Reino = await prisma.reinos.update({
         where : {
-            id:id
+            id: Number(id)
         },
         data : {
             nombre: nombre,
