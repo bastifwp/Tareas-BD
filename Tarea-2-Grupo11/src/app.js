@@ -32,67 +32,66 @@ const use = fn => async (req, res, next) => {
 //endpoints(Routes)
 
 //Endpoits para Trabajos:
-app.post('/trabajos', use(TrabajosController.createTrabajo))
-app.get('/trabajos', use(TrabajosController.getTrabajos))
-app.get('/trabajos/:id', use(TrabajosController.getTrabajoById))
-app.delete('/trabajos/:id', use(TrabajosController.deleteTrabajoById))
-app.put('/trabajos/:id', use(TrabajosController.updateTrabajoById))
+app.post('/api/trabajos', use(TrabajosController.createTrabajo))
+app.get('/api/trabajos', use(TrabajosController.getTrabajos))
+app.get('/api/trabajos/:id', use(TrabajosController.getTrabajoById))
+app.delete('/api/trabajos/:id', use(TrabajosController.deleteTrabajoById))
+app.put('/api/trabajos/:id', use(TrabajosController.updateTrabajoById))
 
 //Endpoints para Personaje_Tiene_Trabajo
-app.post('/personaje_tiene_trabajo',use(Personaje_tiene_trabajoController.createContrato))
-app.get('/personaje_tiene_trabajo',use(Personaje_tiene_trabajoController.getContrato))
-app.get('/personaje_tiene_trabajo/:id_trabajo/:id_personaje', use(Personaje_tiene_trabajoController.getContratoById))
-app.delete('/personaje_tiene_trabajo/:id_trabajo/:id_personaje', use(Personaje_tiene_trabajoController.deleteContratoById))
-app.put('/personaje_tiene_trabajo/:id_trabajo/:id_personaje', use(Personaje_tiene_trabajoController.updateContratoById))
+app.post('/api/personaje_tiene_trabajo',use(Personaje_tiene_trabajoController.createContrato))
+app.get('/api/personaje_tiene_trabajo',use(Personaje_tiene_trabajoController.getContrato))
+app.get('/api/personaje_tiene_trabajo/:id_trabajo/:id_personaje', use(Personaje_tiene_trabajoController.getContratoById))
+app.delete('/api/personaje_tiene_trabajo/:id_trabajo/:id_personaje', use(Personaje_tiene_trabajoController.deleteContratoById))
+app.put('/api/personaje_tiene_trabajo/:id_trabajo/:id_personaje', use(Personaje_tiene_trabajoController.updateContratoById))
 
 //Endpoints para Personajes
-app.post('/personajes', use(PersonajesController.createPersonaje))
-app.get('/personajes', use(PersonajesController.getPersonaje))
-app.get('/personajes/:id', use(PersonajesController.getPersonajeById))
-app.delete('/personajes/:id', use(PersonajesController.deletePersonajeById))
-app.put('/personajes/:id', use(PersonajesController.updatePersonajeById))
+app.post('/api/personajes', use(PersonajesController.createPersonaje))
+app.get('/api/personajes', use(PersonajesController.getPersonaje))
+app.get('/api/personajes/:id', use(PersonajesController.getPersonajeById))
+app.delete('/api/personajes/:id', use(PersonajesController.deletePersonajeById))
+app.put('/api/personajes/:id', use(PersonajesController.updatePersonajeById))
 
 //Endpoints para Karts
-app.post('/karts',use(KartsController.createKart))
-app.get('/karts',use(KartsController.getKarts))
-app.get('/karts/:id',use(KartsController.getKartById))
-app.delete('/karts/:id',use(KartsController.deleteKartById))
-app.put('/karts/:id',use(KartsController.updateKartById))
+app.post('/api/karts',use(KartsController.createKart))
+app.get('/api/karts',use(KartsController.getKarts))
+app.get('/api/karts/:id',use(KartsController.getKartById))
+app.delete('/api/karts/:id',use(KartsController.deleteKartById))
+app.put('/api/karts/:id',use(KartsController.updateKartById))
 
 //Endpoints para Personaje_habita_reino
-app.post('/personaje_habita_reino',use(Personaje_habita_reinoController.createHabitante))
-app.get('/personaje_habita_reino',use(Personaje_habita_reinoController.getHabitantes))
-app.get('/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.getHabitanteById))
-app.delete('/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.deleteHabitanteById))
-app.put('/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.updateHabitanteById))
+app.post('/api/personaje_habita_reino',use(Personaje_habita_reinoController.createHabitante))
+app.get('/api/personaje_habita_reino',use(Personaje_habita_reinoController.getHabitantes))
+app.get('/api/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.getHabitanteById))
+app.delete('/api/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.deleteHabitanteById))
+app.put('/api/personaje_habita_reino/:id_reino/:id_personaje',use(Personaje_habita_reinoController.updateHabitanteById))
 
 //Endpoints para Reinos
-app.post('/reinos',use(ReinosController.createReino))
-app.get('/reinos',use(ReinosController.getReinos))
-app.get('/reinos/:id',use(ReinosController.getReinoById))
-app.delete('/reinos/:id',use(ReinosController.deleteReinoById))
-app.put('/reinos/:id',use(ReinosController.updateReinoById))
+app.post('/api/reinos',use(ReinosController.createReino))
+app.get('/api/reinos',use(ReinosController.getReinos))
+app.get('/api/reinos/:id',use(ReinosController.getReinoById))
+app.delete('/api/reinos/:id',use(ReinosController.deleteReinoById))
+app.put('/api/reinos/:id',use(ReinosController.updateReinoById))
 
 //Endpoints para Reino_tiene_defensa
-app.post('/reino_tiene_defensa',use(Reino_tiene_defensaController.createPosesion))
-app.get('/reino_tiene_defensa',use(Reino_tiene_defensaController.getPosesiones))
-app.get('/reinos/:id_reino/:id_defensa',use(Reino_tiene_defensaController.deletePosesionById))
-app.delete('/reinos/:id_reino/:id_defensa',use(Reino_tiene_defensaController.deletePosesionById))
-app.put('/reino_tiene_defensa/:id_reino/:id_defensa',use(Reino_tiene_defensaController.updatePosesionById))
+app.post('/api/reino_tiene_defensa',use(Reino_tiene_defensaController.createPosesion))
+app.get('/api/reino_tiene_defensa',use(Reino_tiene_defensaController.getPosesiones))
+app.get('/api/reino_tiene_defensa/:id_reino/:id_defensa',use(Reino_tiene_defensaController.getPosesionById))
+app.delete('/api/reino_tiene_defensa/:id_reino/:id_defensa',use(Reino_tiene_defensaController.deletePosesionById))
 
 //Endpoints para Defensas
-app.post('/defensas',use(DefensasController.createDefensa))
-app.get('/defensas',use(DefensasController.getDefensas))
-app.get('/defensas/:id',use(DefensasController.getDefensaById))
-app.delete('/defensas/:id',use(DefensasController.deleteDefensaById))
-app.put('/defensas/:id',use(DefensasController.updateDefensaById))
+app.post('/api/defensas',use(DefensasController.createDefensa))
+app.get('/api/defensas',use(DefensasController.getDefensas))
+app.get('/api/defensas/:id',use(DefensasController.getDefensaById))
+app.delete('/api/defensas/:id',use(DefensasController.deleteDefensaById))
+app.put('/api/defensas/:id',use(DefensasController.updateDefensaById))
 
 //Endpoints para Diplomacias
-app.post('/diplomacias',use(DiplomaciasController.createDiplomacia))
-app.get('/diplomacias',use(DiplomaciasController.getDiplomacias))
-app.get('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.getDiplomaciaById))
-app.delete('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.deleteDiplomaciaById))
-app.put('/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.updateDiplomaciaById))
+app.post('/api/diplomacias',use(DiplomaciasController.createDiplomacia))
+app.get('/api/diplomacias',use(DiplomaciasController.getDiplomacias))
+app.get('/api/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.getDiplomaciaById))
+app.delete('/api/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.deleteDiplomaciaById))
+app.put('/api/diplomacias/:id_reino1/:id_reino2',use(DiplomaciasController.updateDiplomaciaById))
 
 //Endpoints
 app.get('/api/top5personajesConMasFuerza', use(EndpointsController.top5Fuerza))
@@ -109,7 +108,7 @@ app.get('/', (req, res) => {
 
 // 404 not found route
 app.use((_, res) => {
-    res.status(404).json({ message: 'Not found Crack!' });
+    res.status(404).json({ message: 'Not found' });
 })
 
 

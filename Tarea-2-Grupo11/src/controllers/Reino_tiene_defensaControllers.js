@@ -33,9 +33,9 @@ const createPosesion = async (req, res) => {
     ErrorController.ExistenceCheck(find_reino, 'Reino')
 
     //Debemos verificar que la defensa exista 
-    const find_defensa = await prisma.reinos.findUnique({
+    const find_defensa = await prisma.defensas.findUnique({
         where: {
-            id: id_defensa
+            id: Number(id_defensa)
         }
     })
     ErrorController.ExistenceCheck(find_defensa, 'Defensa')
@@ -75,9 +75,9 @@ const getPosesionById = async (req, res) => {
 
     const Posesion = await prisma.reino_tiene_defensa.findUnique({
         where: {
-            id_reino_id_defensa : {
+            id_defensa_id_reino : {
                 id_reino: Number(id_reino),
-                id_defensa: Number(id_defensa),
+                id_defensa: Number(id_defensa)
             }
         }
     })
@@ -88,29 +88,8 @@ const getPosesionById = async (req, res) => {
 }
 
 //Petición para Actualizar un Posesion (U)
+//No tiene sentido pues no posee atributos, solo primary keys
 
-const updatePosesionById = async (req, res) => {
-    const {id_reino,id_defensa} = req.params
-    const {id_reinoNew,id_defensaNew} = req.body
-
-
-    ErrorController.Reino_tiene_DefensaSintaxError(id_reinoNew,id_defensaNew)
-
-    const Posesion = await prisma.reino_tiene_defensa.update({
-        where : {
-            id_reino_id_defensa : {
-                id_reino: Number(id_reino),
-                id_defensa: Number(id_defensa),
-            }
-        },
-        data : {
-            id_reino: id_reinoNew,
-            id_defensa: id_defensaNew
-        },
-
-    })
-    res.json(Posesion)
-}
 
 //Petición para borrar un trabajo(D)
 
@@ -134,7 +113,7 @@ const deletePosesionById = async (req, res) => {
     
     const deletePosesion = await prisma.reino_tiene_defensa.delete({
         where:{
-            id_reino_id_defensa : {
+            id_defensa_id_reino : {
                 id_reino: Number(id_reino),
                 id_defensa: Number(id_defensa),
             }
@@ -147,8 +126,7 @@ const Reino_tiene_defensaController = {
     createPosesion,
     getPosesiones,
     getPosesionById,
-    updatePosesionById,
-    deletePosesionById,
+    deletePosesionById
 }
 
 export default Reino_tiene_defensaController

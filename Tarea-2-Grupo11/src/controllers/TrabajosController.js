@@ -52,7 +52,7 @@ const getTrabajoById = async (req, res) => {
 
     const trabajos = await prisma.trabajos.findUnique({
         where: {
-            id: id
+            id: Number(id)
         }
     })
 

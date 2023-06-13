@@ -74,18 +74,20 @@ const cantidadHabitantes = async (req, res) => {
 
     const {id_reino} = req.params
 
-    const Reino = prisma.reinos.findUnique({
+    const Reino = await prisma.reinos.findUnique({
         where: {
             id : Number(id_reino)
         }
     })
+
+    console.log(Reino)
 
     ErrorController.ExistenceCheck(Reino,'reino')
 
     //obtenemos todos los habitantes del reino
     const Habitantes = await prisma.personaje_habita_reino.findMany({
         where:{
-            id_reino : Reino.id
+            id_reino : Number(id_reino)
         }
     })
 

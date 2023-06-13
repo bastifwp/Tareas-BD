@@ -63,7 +63,7 @@ const getReinoById = async (req, res) => {
         }
     })
 
-    ErrorController.ExistenceCheck(Defensa, 'defensa')
+    ErrorController.ExistenceCheck(Reino, 'reino')
 
     res.json(Reino)
 }

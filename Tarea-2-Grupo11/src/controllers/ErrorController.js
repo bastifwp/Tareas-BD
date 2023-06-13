@@ -32,17 +32,15 @@ class BaseError extends Error{
 const SintaxCheck = (sintaxis,sintaxis_esperada) => {
 
     for (let index = 0; index < sintaxis.length; index++) {
-        console.log("Hola, estoy aca por ",  sintaxis[index][0])
 
 
         if(typeof sintaxis[index][0] !==  sintaxis_esperada[index][0] && sintaxis[index][0] !== undefined ){
-            console.log("Holas, entre aquí gracias a: ", typeof sintaxis[index][0])
 
             throw new ErrorController.BaseError('Tipo invalido',400,'El atributo '+sintaxis[index][2]+' debe ser un '+sintaxis_esperada[index][0])
         }
         
 
-        //Errores de formato para un número, FALTA AGREGAR EL LÍMITE PARA MAYOR
+        //Errores de formato para un número
         if(typeof sintaxis[index][0] == 'number'){
 
             if(sintaxis[index][1] < sintaxis_esperada[index][1]){
@@ -78,7 +76,7 @@ const SintaxCheck = (sintaxis,sintaxis_esperada) => {
 
             //Probamos si el string de date es válido (el string está en la posicion 1)
             if(!re.test(sintaxis[index][1])){
-                throw new ErrorController.BaseError("Formato de fecha erroeno", 400, "Formato esperado : AAAA\-MM\-DD (en el mundo champiñon cada mes tiene 28 días)" )
+                throw new ErrorController.BaseError("Formato de fecha erroeno", 400, "Formato esperado : AAAA\-MM\-DD" )
             }
 
         }

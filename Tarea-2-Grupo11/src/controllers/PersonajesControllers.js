@@ -119,7 +119,7 @@ const updatePersonajeById = async (req, res) => {
 
     let sintaxis_esperada = [['string', 45],
                              ['number', 0],
-                             ['object', 45]
+                             ['object', 45],
                              ['string', 30]] //Date es tipo object, no es necesario pasarle el rango máximo, pues una re se encarga del formato completo
 
     

@@ -24,7 +24,6 @@ const createDefensa = async (req, res) => {
 
     const Defensa = await prisma.defensas.create({ 
         data: {
-            id,
             defensa
         }
     })
