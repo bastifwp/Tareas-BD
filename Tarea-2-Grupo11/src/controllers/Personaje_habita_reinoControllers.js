@@ -39,6 +39,29 @@ const createHabitante = async (req, res) => {
 
     ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
 
+    //Debemos verificar que el personaje exista
+    const find_personaje = await prisma.personajes.findUnique({
+        where: {
+            id: id_personaje
+        }
+    })
+    ErrorController.ExistenceCheck(find_personaje, 'Personaje')
+
+    //Debemos verificar que el reino exista
+    const find_reino = await prisma.reinos.findUnique({
+        where: {
+            id: id_reino
+        }
+    })
+    ErrorController.ExistenceCheck(find_reino, 'Reino')
+
+    //Debemos verificar si ya existe el habitante
+    const find_habitante = await prisma.personaje_habita_reino.findUnique({
+        where: {
+            id_reino_id_personaje : {id_reino, id_personaje}
+        }
+    })
+    ErrorController.InDbCheck(find_habitante, 'Habitante')
 
     const Habitante = await prisma.personaje_habita_reino.create({ 
         data: {
@@ -60,6 +83,12 @@ const getHabitantes = async (req, res) => {
 
 const getHabitanteById = async (req, res) => {
     const {id_reino,id_personaje} = req.params
+
+    //Verificaremos si los id's entregados son numeros
+    ErrorController.IdNumberCheck(id_reino)
+    ErrorController.IdNumberCheck(id_personaje)
+
+
     const Habitante = await prisma.personaje_habita_reino.findUnique({
         where: {
             id_reino_id_personaje :{
@@ -68,6 +97,10 @@ const getHabitanteById = async (req, res) => {
             }
         }
     })
+
+    //Verificamos si existe el habitante
+    ErrorController.ExistenceCheck(Habitante, 'Habitante')
+
     res.json(Habitante)
 }
 
@@ -76,8 +109,48 @@ const getHabitanteById = async (req, res) => {
 const updateHabitanteById = async (req, res) => {
     const {id_reino,id_personaje} = req.params
     var {fecha_registro,es_gobernante} = req.body
-    fecha_registro = new Date(fecha_registro)
-    const Habitante = await prisma.personaje_habita_reino.update({
+
+    //Quiero guardar el string para luego poder usar expresiones regulares para verificar el formato
+    let string_fecha_registro = fecha_registro 
+
+    //Solo si se escribe algo se pasa a un Date
+    if(fecha_registro != null){
+        fecha_registro = new Date(fecha_registro)
+    }    
+
+    //Debemos verificar que el Habitante a modificar existe:
+    ErrorController.IdNumberCheck(id_reino)
+    ErrorController.IdNumberCheck(id_personaje)
+
+    const find_habitante = await prisma.personaje_habita_reino.findUnique({
+        where: {
+            id_reino_id_personaje : {
+                id_reino: Number(id_reino),
+                id_personaje: Number(id_personaje)
+            }
+        }
+    })
+    ErrorController.ExistenceCheck(find_habitante, 'Habitante')
+
+    //Ahora debemos verificar los atributos not null
+    //Primeramente verificamos los notnull
+    let not_null = [[fecha_registro, 'fecha_registro'],
+                    [es_gobernante, 'es_gobernante']]
+
+    ErrorController.NotNullCheck(not_null)
+
+    //Ahora debemos verificar la sintaxis
+    let sintaxis = [[fecha_registro, string_fecha_registro, 'fecha_registro'],
+                    [es_gobernante, es_gobernante, 'es_gobernante']]
+
+    let sintaxis_esperada = [['object', 45], //Date es de tipo 'object'
+                             ['boolean', 0]]
+
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+
+    //Ahora si podemos actualizar al habitante
+    let Habitante = await prisma.personaje_habita_reino.update({
         where : {
             id_reino_id_personaje :{
                 id_reino: Number(id_reino),
@@ -96,6 +169,21 @@ const updateHabitanteById = async (req, res) => {
 
 const deleteHabitanteById = async (req, res) => {
     const {id_reino,id_personaje} = req.params
+
+    //Debemos verifcar que los id sean enteros y que exista el habitante a eliminar
+    ErrorController.IdNumberCheck(id_reino)
+    ErrorController.IdNumberCheck(id_personaje)
+
+    const find_habitante = await prisma.personaje_habita_reino.findUnique({
+        where:{
+            id_reino_id_personaje :{
+                id_reino: Number(id_reino),
+                id_personaje: Number(id_personaje)
+            }
+        },
+    })
+    ErrorController.ExistenceCheck(find_habitante, 'Habitante')
+
     const deleteHabitante = await prisma.personaje_habita_reino.delete({
         where:{
             id_reino_id_personaje :{
@@ -104,6 +192,9 @@ const deleteHabitanteById = async (req, res) => {
             }
         },
     })
+
+
+
     res.json(deleteHabitante) 
 }
 

@@ -46,11 +46,17 @@ const getTrabajos = async (req, res) => {
 
 const getTrabajoById = async (req, res) => {
     const {id} = req.params
+
+    //debemos verificar que el id es un numero y que existe el trabajo
+    ErrorController.IdNumberCheck(id)
+
     const trabajos = await prisma.trabajos.findUnique({
         where: {
             id: id
         }
     })
+
+    ErrorController.ExistenceCheck(trabajos, "Trabajo")
     res.json(trabajos)
 }
 
@@ -59,15 +65,32 @@ const updateTrabajoById = async (req, res) => {
     const { id } = req.params
     const {descripcion, sueldo} = req.body
 
-    let sintaxis = [[typeof descripcion,descripcion,'descripcion'],
-                    [typeof sueldo,sueldo,'sueldo']]
+
+    //Verificamos los not null
+    let not_null = [[sueldo, 'sueldo']]
+    ErrorController.NotNullCheck(not_null)
+
+    //Verificamos la sintaxis
+    let sintaxis = [[descripcion ,descripcion,'descripcion'],
+                    [sueldo, sueldo,'sueldo']]
 
     let sintaxis_esperada = [['string',45],
                              ['number',0]]
 
     //Revisamos atributos
-    ErrorController.SintaxError(sintaxis,sintaxis_esperada)
+    ErrorController.SintaxCheck(sintaxis,sintaxis_esperada)
 
+    //Debemos verificar que existe el trbabajo que queremos modificar:
+    ErrorController.IdNumberCheck(id)
+
+    const find_trabajo = await prisma.trabajos.findUnique({
+        where : {
+            id: Number(id)
+        },
+    })
+    ErrorController.ExistenceCheck(find_trabajo, 'Trabajo')
+
+    //Ahora podemos actualizar el trabajo en cuestion
     const trabajos = await prisma.trabajos.update({
         where : {
             id: Number(id),
@@ -85,6 +108,17 @@ const updateTrabajoById = async (req, res) => {
 //Petición para borrar un trabajo(D)
 const deleteTrabajoById = async (req, res) => {
     const {id} = req.params
+
+    //Debemos verificar que lo que queremos eliminar exista
+    ErrorController.IdNumberCheck(id)
+
+    const find_trabajo = await prisma.trabajos.findUnique({
+        where : {
+            id: Number(id)
+        },
+    })
+    ErrorController.ExistenceCheck(find_trabajo, 'Trabajo')
+
     const deleteTrabajo = await prisma.trabajos.delete({
         where:{
             id: Number(id)

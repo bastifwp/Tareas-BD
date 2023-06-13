@@ -32,9 +32,11 @@ class BaseError extends Error{
 const SintaxCheck = (sintaxis,sintaxis_esperada) => {
 
     for (let index = 0; index < sintaxis.length; index++) {
+        console.log("Hola, estoy aca por ",  sintaxis[index][0])
+
 
         if(typeof sintaxis[index][0] !==  sintaxis_esperada[index][0] && sintaxis[index][0] !== undefined ){
-            console.log("Holas, entre aquí gracias a: ", sintaxis[index][0])
+            console.log("Holas, entre aquí gracias a: ", typeof sintaxis[index][0])
 
             throw new ErrorController.BaseError('Tipo invalido',400,'El atributo '+sintaxis[index][2]+' debe ser un '+sintaxis_esperada[index][0])
         }
@@ -96,6 +98,7 @@ const NotNullCheck = (not_null) => {
     }
 }
 
+//No ocupe esto pq 
 const ExistenceCheck = (objeto,nombre) => {
     if(objeto == null){
         throw new ErrorController.BaseError('Error de existencia',400,'No existe tal '+nombre)
@@ -103,12 +106,50 @@ const ExistenceCheck = (objeto,nombre) => {
 }
 
 
+const InDbCheck = (objeto, nombre) => {
+    if(objeto != null){
+        throw new ErrorController.BaseError('Error de existenica', 400, "Ya existe esa entidad "+nombre)
+    }
+}
+/*
+//Busca 1 pk en la lista
+const IdCheckSimple = (id_buscado, lista, nombre_entidad) => {
+    let found = false 
+
+    //Recorremos la lista para verificar si pillamos el id
+    for(let i=0; i < lista.length; i++){
+
+        //Verificamos si encontramos el número
+        if(Number(id_buscado) == lista[i]['id']){
+            found = true
+        }
+    }
+
+    //Si luego de recorrer toda la lista no se encuentra entonces tirar error
+    if(!found){
+        throw new ErrorController.BaseError("Error de existencia", 400, "No existe una entidad de tipo" + String(nombre_entidad) +  " con el identificador " + String(id_buscado))
+    }
+}*/
+
+
+const IdNumberCheck = (id) =>{
+    //Si el id no es un número entonces hay que tirar error
+    if(isNaN(Number(id))){
+        throw new ErrorController.BaseError("Error en identificador", 400, "El id entregado: " + String(id) + " debe ser un entero")
+    }
+}
+    
+
+
+
 //Ahora queremos exportar este error base a los distintos módulos:
 const ErrorController = {
     BaseError,
     SintaxCheck,
     NotNullCheck,
-    ExistenceCheck
+    ExistenceCheck,
+    IdNumberCheck,
+    InDbCheck
 }
 
 

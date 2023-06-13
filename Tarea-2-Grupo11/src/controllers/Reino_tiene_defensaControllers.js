@@ -24,8 +24,31 @@ const createPosesion = async (req, res) => {
 
     ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
 
-    
+    //Debemos verificar que el reino exista
+    const find_reino = await prisma.reinos.findUnique({
+        where: {
+            id: id_reino
+        }
+    })
+    ErrorController.ExistenceCheck(find_reino, 'Reino')
 
+    //Debemos verificar que la defensa exista 
+    const find_defensa = await prisma.reinos.findUnique({
+        where: {
+            id: id_defensa
+        }
+    })
+    ErrorController.ExistenceCheck(find_defensa, 'Defensa')
+
+    //Debemos verificar si ya existe la posesión
+    const find_posesion = await prisma.reino_tiene_defensa.findUnique({
+        where: {
+            id_defensa_id_reino : {id_defensa, id_reino}
+        }
+    })
+    ErrorController.InDbCheck(find_posesion, "Posesion")   
+
+    //ahora podemos crear la posesion 
     const Posesion = await prisma.reino_tiene_defensa.create({ //Creo que aquí podemos ver los errores
         data: {
             id_reino,
@@ -45,6 +68,11 @@ const getPosesiones = async (req, res) => {
 
 const getPosesionById = async (req, res) => {
     const {id_reino,id_defensa} = req.params
+
+    //Verificaremos si los id's entregados son numeros
+    ErrorController.IdNumberCheck(id_reino)
+    ErrorController.IdNumberCheck(id_defensa)    
+
     const Posesion = await prisma.reino_tiene_defensa.findUnique({
         where: {
             id_reino_id_defensa : {
@@ -53,6 +81,9 @@ const getPosesionById = async (req, res) => {
             }
         }
     })
+    //Verificamos si existe el habitante
+    ErrorController.ExistenceCheck(Posesion, 'Posesion')   
+
     res.json(Posesion)
 }
 
@@ -62,7 +93,7 @@ const updatePosesionById = async (req, res) => {
     const {id_reino,id_defensa} = req.params
     const {id_reinoNew,id_defensaNew} = req.body
 
-    //Revisamos atributos
+
     ErrorController.Reino_tiene_DefensaSintaxError(id_reinoNew,id_defensaNew)
 
     const Posesion = await prisma.reino_tiene_defensa.update({
@@ -85,6 +116,22 @@ const updatePosesionById = async (req, res) => {
 
 const deletePosesionById = async (req, res) => {
     const {id_reino,id_defensa} = req.params
+
+    //Debemos verificar si existe la posesión a eliminar:
+    ErrorController.IdNumberCheck(id_reino)
+    ErrorController.IdNumberCheck(id_defensa)
+
+    const find_posesion = await prisma.reino_tiene_defensa.findUnique({
+        where:{
+            id_defensa_id_reino :{
+                id_defensa: Number(id_defensa),
+                id_reino: Number(id_reino)
+            }
+        },
+    })
+    ErrorController.ExistenceCheck(find_posesion, 'Posesion')
+
+    
     const deletePosesion = await prisma.reino_tiene_defensa.delete({
         where:{
             id_reino_id_defensa : {

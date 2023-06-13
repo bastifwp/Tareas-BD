@@ -28,6 +28,18 @@ const createKart = async (req, res) => {
 
     ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
 
+    //Debemos verificar que existe el personaje sólo si es distinto a null
+    if(id_personaje != null){
+        ErrorController.IdNumberCheck(id_personaje)
+    
+        const find_personaje = await prisma.personajes.findUnique({
+            where: {
+                id: Number(id_personaje)
+            }
+        })
+        ErrorController.ExistenceCheck(find_personaje, 'Personaje')
+    }
+
 
     const Kart = await prisma.karts.create({ 
         data: {
@@ -49,11 +61,20 @@ const getKarts = async (req, res) => {
 
 const getKartById = async (req, res) => {
     const {id} = req.params
+
+    //Debemos verificar que el id sea un número
+    ErrorController.IdNumberCheck(id)
+    
+
     const Kart = await prisma.karts.findUnique({
         where: {
             id: Number(id)
         }
     })
+
+    //Ahora debeoms verificar de qué existió el id:
+    ErrorController.ExistenceCheck(Kart, 'Kart')
+
     res.json(Kart)
 }
 
@@ -62,6 +83,43 @@ const getKartById = async (req, res) => {
 const updateKartById = async (req, res) => {
     const { id } = req.params
     const {modelo,color,velocidad_maxima,id_personaje} = req.body
+    
+
+    //Verificaremos la sintaxis del body
+    let sintaxis = [[modelo, modelo, 'modelo'],
+                    [color, color, 'color'],
+                    [velocidad_maxima, velocidad_maxima, 'velocidad_maxima']]
+
+    let sintaxis_esperada = [['string', 45],
+                             ['string', 45],
+                             ['number', 0]]
+
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+
+    //Debemos verificar que el id del kart sea un número y que exista ese kart
+    ErrorController.IdNumberCheck(id)
+
+    const find_kart = await prisma.karts.findUnique({
+        where: {
+            id: Number(id)
+        }
+    })
+    ErrorController.ExistenceCheck(find_kart,'Kart')
+    
+    //Debemos verificar que existe el personaje sólo si es distinto a null
+    if(id_personaje != null){
+        ErrorController.IdNumberCheck(id_personaje)
+
+        const find_personaje = await prisma.personajes.findUnique({
+            where: {
+                id: Number(id_personaje)
+            }
+        })
+        ErrorController.ExistenceCheck(find_personaje, 'Personaje')
+    }
+
+
     const Kart = await prisma.karts.update({
         where : {
             id: Number(id)
@@ -81,11 +139,18 @@ const updateKartById = async (req, res) => {
 
 const deleteKartById = async (req, res) => {
     const {id} = req.params
+
+    //Debemos verificar que el id sea un numero
+    ErrorController.IdNumberCheck(id)
+
     const deleteKart = await prisma.karts.delete({
         where:{
             id: Number(id)
         },
     })
+
+    ErrorController.ExistenceCheck(deleteKart, 'Kart')
+    
     res.json(deleteKart) 
 }
 

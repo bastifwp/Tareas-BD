@@ -29,8 +29,6 @@ const createDefensa = async (req, res) => {
         }
     })
 
-
-
     res.json(Defensa) 
 }
 
@@ -43,20 +41,30 @@ const getDefensas = async (req, res) => {
 
 const getDefensaById = async (req, res) => {
     const {id} = req.params
+
+    //Antesde buscarlo debemos verificar que el id es un número entero
+    ErrorController.IdNumberCheck(id)
+
+
     const Defensa = await prisma.defensas.findUnique({
         where: {
             id: Number(id)
         }
     })
-    ErrorController.ExistenceCheck(Defensa,'defensa')
+
+    ErrorController.ExistenceCheck(Defensa,'defensa') 
+
     res.json(Defensa)
 }
 
 //Petición para Actualizar un Defensa (U)
-
 const updateDefensaById = async (req, res) => {
     const {id} = req.params
     const {defensa} = req.body
+
+    //Verificamos que el id sea un número
+    ErrorController.IdNumberCheck(id)
+
     const Defensa = await prisma.defensas.findUnique({
         where : {
             id:Number(id)
@@ -65,7 +73,6 @@ const updateDefensaById = async (req, res) => {
     ErrorController.ExistenceCheck(Defensa,'defensa')
 
     let not_null = [[defensa, 'defensa']] //atributos
-
     ErrorController.NotNullCheck(not_null)
 
     //Verificar errores de sintaxix:
@@ -86,16 +93,18 @@ const updateDefensaById = async (req, res) => {
 }
 
 //Petición para borrar un Defensa (D)
-
 const deleteDefensaById = async (req, res) => {
     const {id} = req.params
+
+    //Verificamos que el id sea un número
+    ErrorController.IdNumberCheck(id)
 
     const Defensa = await prisma.defensas.findUnique({
         where : {
             id:Number(id)
         },
     })
-    ErrorController.ExistenceCheck(Defensa,'defensa')
+    ErrorController.ExistenceCheck(Defensa,'Defensa')
 
     const deleteDefensa = await prisma.defensas.delete({
         where:{

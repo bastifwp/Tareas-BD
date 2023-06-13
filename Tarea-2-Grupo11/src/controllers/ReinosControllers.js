@@ -53,11 +53,18 @@ const getReinos = async (req, res) => {
 
 const getReinoById = async (req, res) => {
     const {id} = req.params
+
+    //Debemos verificar que el id es un número y que el reino existe:
+    ErrorController.IdNumberCheck(id)
+
     const Reino = await prisma.reinos.findUnique({
         where: {
             id: Number(id)
         }
     })
+
+    ErrorController.ExistenceCheck(Defensa, 'defensa')
+
     res.json(Reino)
 }
 
@@ -67,8 +74,38 @@ const updateReinoById = async (req, res) => {
     const {id} = req.params
     const {nombre,ubicacion,superficie} = req.body
 
-    //Revisamos atributos
+    //Verificamos que exista el reino que queremos modificar:
+    ErrorController.IdNumberCheck(id)
 
+    const find_reino = await prisma.reinos.findUnique({
+        where : {
+            id: Number(id)
+        },
+    })
+    ErrorController.ExistenceCheck(find_reino,'Reino')
+
+    //Ahora debemos verificar errores de not null y de sintaxis
+    //Verificamos que los atributos not null esten presentes
+    let not_null = [[nombre, 'nombre'],
+                    [ubicacion, 'ubicacion'],
+                    [superficie, 'superficie']]
+
+    ErrorController.NotNullCheck(not_null)
+
+
+    //Ahora veamos los errores de sintaxis
+    let sintaxis = [[nombre, nombre, 'nombre'],
+                    [ubicacion, ubicacion, 'ubicacion'],
+                    [superficie, superficie, 'superficie']]
+
+    let sintaxis_esperada = [['string', 45],
+                             ['string', 45],
+                             ['number', 0]]
+    
+    ErrorController.SintaxCheck(sintaxis, sintaxis_esperada)
+
+
+    //Ahora si podemos actualizarlo
     const Reino = await prisma.reinos.update({
         where : {
             id: Number(id)
